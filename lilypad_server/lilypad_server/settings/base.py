@@ -1,24 +1,22 @@
 # Django settings for lilypad_server project.
 
-DEBUG = True
+import os
+
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(
+    os.path.realpath(__file__)
+)))
+
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
+    ('Greg Nicholas', 'greg.nicholas@gmail.com'),
 )
 
 MANAGERS = ADMINS
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': '',                      # Or path to database file if using sqlite3.
-        'USER': '',                      # Not used with sqlite3.
-        'PASSWORD': '',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
-    }
-}
+# defined in installation-specific settings file
+DATABASES = {}
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.4/ref/settings/#allowed-hosts
@@ -34,7 +32,9 @@ TIME_ZONE = 'America/Chicago'
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'en-us'
 
-SITE_ID = 1
+# Commented out: we don't need the Sites framework and it causes
+#   problems with Django-nonrel
+# SITE_ID = 1
 
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
@@ -82,7 +82,8 @@ STATICFILES_FINDERS = (
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = '#zj7j&amp;gk#mklum&amp;pv@%8nq*ap937_d@jfqyhz6nn18!=@w1k^&amp;'
+# TODO: make this a private environment variable
+SECRET_KEY = '#zj7j&amp;gk#mklul&amp;pv@%8nq*a2937_d@jfqrhz6nn18!=@w1k^&amp;'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -107,22 +108,23 @@ ROOT_URLCONF = 'lilypad_server.urls'
 WSGI_APPLICATION = 'lilypad_server.wsgi.application'
 
 TEMPLATE_DIRS = (
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
+    os.path.join(PROJECT_ROOT, 'templates'),
 )
 
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'django.contrib.sites',
+    # 'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # Uncomment the next line to enable the admin:
-    # 'django.contrib.admin',
+    'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
+
+    # third-party apps
+    'djangotoolbox',
 )
 
 # A sample logging configuration. The only tangible logging
