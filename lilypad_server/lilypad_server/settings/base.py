@@ -2,6 +2,7 @@
 
 import os
 
+# Root directory for all Django site code (one level below repository root)
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(
     os.path.realpath(__file__)
 )))
