@@ -127,6 +127,9 @@ INSTALLED_APPS = (
     # third-party apps
     'djangotoolbox',
     'django_extensions',
+
+    # our apps
+    'pace',
 )
 
 # A sample logging configuration. The only tangible logging
