@@ -7,20 +7,30 @@ class Classroom(models.Model):
     teacher_oids = ListField(models.CharField(max_length=24),
         help_text='ObjectID strings for auth.User objects')
 
-    students = ListField(EmbeddedModelField('Student'), editable=False)
+    student_oids = ListField(models.CharField(max_length=24),
+        help_text='ObjectID strings for pace.Student objects')
 
     @property
     def teachers(self):
         User.objects.filter(id__in=self.teacher_oids)
+
+    @property
+    def students(self):
+        Student.objects.filter(id__in=self.student_oids)
+
 
 class Student(models.Model):
     first_name = models.CharField(max_length=200)
     last_name = models.CharField(max_length=200,
         help_text="(or partial last name)")
 
-    notes = ListField(EmbeddedModelField('Note'), editable=False)
-    behavior_points = ListField(EmbeddedModelField('GlobalBehaviorPointRecord'),
+    discussions = ListField(EmbeddedModelField('Discussion'), editable=False)
+    behavior_point_records = ListField(EmbeddedModelField('GlobalBehaviorPointRecord'),
         editable=False)
+
+class Discussion(models.Model):
+    title = models.CharField(max_length=200)
+    notes = ListField(EmbeddedModelField('Note'), editable=False)
 
 class Note(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
@@ -44,7 +54,9 @@ GLOBAL_BEHAVIOR_TYPES = (
 class GlobalBehaviorPointRecord(models.Model):
     behavior_type = models.CharField(max_length=4,
         choices=GLOBAL_BEHAVIOR_TYPES)
-    created_at = models.DateTimeField(auto_now_add=True)
+    recorded_at = models.DateTimeField(auto_now_add=True)
+    value = models.IntegerField()
+    max_value = models.IntegerField(null=True, blank=True)
 
     date = models.DateField()
     period = models.IntegerField()
