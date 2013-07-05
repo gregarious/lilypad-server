@@ -68,8 +68,7 @@ class GlobalBehaviorPointRecordDetail(APIView):
             record, data=request.DATA, student_pk=student_pk,
             context={'request': request})
         if serializer.is_valid():
-            new_record = serializer.save()
-            student.behavior_point_records.append(new_record)
+            serializer.save()
             student.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

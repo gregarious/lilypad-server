@@ -37,6 +37,8 @@ class StudentSerializer(serializers.HyperlinkedModelSerializer):
 class GlobalBehaviorPointRecordSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = GlobalBehaviorPointRecord
+        fields = ('id', 'url', 'behavior_type', 'recorded_at', 'value',
+            'max_value', 'date', 'period')
 
     def __init__(self, *args, **kwargs):
         try:

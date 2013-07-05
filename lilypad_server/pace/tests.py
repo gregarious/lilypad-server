@@ -6,6 +6,7 @@ Replace this with more appropriate tests for your application.
 """
 from datetime import date
 from urlparse import urlparse
+import json
 
 from common.tests import FixtureMixin, APITestCase
 
@@ -104,19 +105,25 @@ class BehaviorPointRecordCollectionPOST(APITestCase, ClassroomFixtureMixin):
 
     def test_response_content(self):
         '''
-        Ensure new point record object is returned with at least an _id
+        Ensure new point record object is returned with at least a `url`
         attribute.
         '''
-        _id = self.json_response.get('id')
-        self.assertTrue(isinstance(_id, basestring))
-        self.assertEqual(len(_id), 24)
+        url = self.json_response.get('url')
+        self.assertTrue(isinstance(url, basestring))
+        self.assertGreater(len(url), 0)
+
+    def test_resource_exists(self):
+        response = self.client.get(self.json_response.get('url'))
+        record = json.loads(response.content)
+        self.assertTrue(isinstance(record, dict))
 
     def test_object_content(self):
         record_id = self.json_response.get('id')
         student = Student.objects.get(id=self.student.id)
-        self.assertEqual(len(student.behavior_point_records), 2)
 
+        self.assertEqual(len(student.behavior_point_records), 2)
         record = [r for r in student.behavior_point_records if r.id == record_id][0]
+
         self.assertEqual(record.behavior_type, 'UKW')
         self.assertEqual(record.value, 2)
         self.assertEqual(record.max_value, 2)
@@ -161,6 +168,7 @@ class BehaviorPointRecordResourcePUT(APITestCase, ClassroomFixtureMixin):
         self.assertEqual(len(student.behavior_point_records), 1)
 
         record = student.behavior_point_records[0]
+
         self.assertEqual(record.behavior_type, 'DW')
         self.assertEqual(record.value, 0)
         self.assertEqual(record.max_value, 2)
