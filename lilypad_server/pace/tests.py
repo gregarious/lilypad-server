@@ -5,6 +5,7 @@ when you run "manage.py test".
 Replace this with more appropriate tests for your application.
 """
 from datetime import date
+from urlparse import urlparse
 
 from common.tests import FixtureMixin, APITestCase
 
@@ -41,7 +42,7 @@ class ClassroomFixtureMixin(FixtureMixin):
 
 class StudentCollectionGET(APITestCase, ClassroomFixtureMixin):
     method = 'get'
-    url = '/students/'
+    url = '/pace/students/'
 
     def test_response_content(self):
         self.assertTrue(isinstance(self.json_response, list))
@@ -50,9 +51,10 @@ class StudentCollectionGET(APITestCase, ClassroomFixtureMixin):
 
 class StudentResourceGET(APITestCase, ClassroomFixtureMixin):
     method = 'get'
+
     @property
     def url(self):
-        return '/students/%s/' % self.student.id
+        return '/pace/students/%s/' % self.student.id
 
     def test_response_content(self):
         '''
@@ -63,21 +65,23 @@ class StudentResourceGET(APITestCase, ClassroomFixtureMixin):
         self.assertEqual(attr_get('first_name'), 'John')
         self.assertEqual(attr_get('last_name'), 'D')
 
+        record_collection_path = urlparse(attr_get('behavior_point_record_collection')).path
         self.assertEqual(
-            attr_get('behavior_point_records'),
-            '/students/%s/behavior_point_records/')
+            record_collection_path,
+            '/pace/students/%s/global_behavior_point_records/' % self.student.id)
 
-        self.assertEqual(
-            attr_get('discussions'),
-            '/students/%s/discussions/')
+        # self.assertEqual(
+        #     attr_get('discussions'),
+        #     '/pace/students/%s/discussions/')
 
 ### BehaviorPointRecord Resource Tests ###
 
 class BehaviorPointRecordCollectionGET(APITestCase, ClassroomFixtureMixin):
     method = 'get'
+
     @property
     def url(self):
-        return '/students/%s/behavior_point_records/' % self.student.id
+        return '/pace/students/%s/global_behavior_point_records/' % self.student.id
 
     def test_response_content(self):
         self.assertTrue(isinstance(self.json_response, list))
@@ -85,9 +89,10 @@ class BehaviorPointRecordCollectionGET(APITestCase, ClassroomFixtureMixin):
 
 class BehaviorPointRecordCollectionPOST(APITestCase, ClassroomFixtureMixin):
     method = 'post'
+
     @property
     def url(self):
-        return '/students/%s/behavior_point_records/' % self.student.id
+        return '/pace/students/%s/global_behavior_point_records/' % self.student.id
     data = {
         'behavior_type': 'UKW',
         'value': 2,
@@ -120,9 +125,10 @@ class BehaviorPointRecordCollectionPOST(APITestCase, ClassroomFixtureMixin):
 
 class BehaviorPointRecordResourceGET(APITestCase, ClassroomFixtureMixin):
     method = 'get'
+
     @property
     def url(self):
-        return '/students/%s/behavior_point_records/%s' % (self.student.id, self.point_record.id)
+        return '/pace/students/%s/global_behavior_point_records/%s/' % (self.student.id, self.point_record.id)
 
     def test_response_content(self):
         '''
@@ -138,9 +144,10 @@ class BehaviorPointRecordResourceGET(APITestCase, ClassroomFixtureMixin):
 
 class BehaviorPointRecordResourcePUT(APITestCase, ClassroomFixtureMixin):
     method = 'put'
+
     @property
     def url(self):
-        return '/students/%s/behavior_point_records/%s' % (self.student.id, self.point_record.id)
+        return '/pace/students/%s/global_behavior_point_records/%s/' % (self.student.id, self.point_record.id)
     data = {
         'behavior_type': 'DW',
         'value': 0,
@@ -148,7 +155,6 @@ class BehaviorPointRecordResourcePUT(APITestCase, ClassroomFixtureMixin):
         'date': '2013-07-02',
         'period': 2
     }
-    expected_status_code = 204
 
     def test_object_content(self):
         student = Student.objects.get(id=self.student.id)

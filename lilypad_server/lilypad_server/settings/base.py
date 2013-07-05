@@ -127,6 +127,7 @@ INSTALLED_APPS = (
     # third-party apps
     'djangotoolbox',
     'django_extensions',
+    'rest_framework',
 
     # our apps
     'pace',
