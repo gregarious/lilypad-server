@@ -15,7 +15,7 @@ class Student(models.Model):
     def __unicode__(self):
         return u'%s %s' % (self.first_name, self.last_name)
 
-class PeriodicPointRecord(models.Model):
+class PeriodicRecord(models.Model):
     period = models.IntegerField()
     date = models.DateField()
     student = models.ForeignKey(Student)
