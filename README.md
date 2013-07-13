@@ -14,23 +14,19 @@ A Django-based HTTP server hosting the Lilypad API.
 
 3. Install dependencies into the new environment:
 
-    First manually install the source version of the Django 1.4 nonrel packages:
-
-        $ pip install git+https://github.com/django-nonrel/django@nonrel-1.4
-        $ pip install git+https://github.com/django-nonrel/djangotoolbox@toolbox-1.4
-        $ pip install git+https://github.com/django-nonrel/mongodb-engine@mongodb-engine-1.4-beta
-
-    Then install the rest of the requirements:
-
         $ pip install -r requirements.txt
 
-4. Since there's no standard `settings` module, the `DJANGO_SETTINGS_MODULE` environment variable needs to be set before any Django process is run. The recommended way to do this (for development installations, at least) is to add this variable to your virtualenv. To do so, add the following line to your `.virtualenvs/lilypad/bin/postactivate`:
+4. Two environment variables need to be set: __(1)__ `DJANGO_SETTINGS_MODULE` to explicitly tell any Django process which settings file to use, and __(2)__ `DATABASE_URL` to declare the local installation DB configuration.
 
-        export DJANGO_SETTINGS_MODULE=lilypad_server.settings.development
+    The recommended way to do this (for development installations, at least) is to add this variable to your virtualenv. To do so, add the following line to your `.virtualenvs/lilypad/bin/postactivate`:
+
+        export DJANGO_SETTINGS_MODULE='lilypad_server.settings.development'
+        export DATABASE_URL='postgres://localhost/lilypad_development'
 
     And this to `.virtualenvs/lilypad/bin/predeactivate`:
 
         unset DJANGO_SETTINGS_MODULE
+        unset DATABASE_URL
 
 5. Launch the server:
 
