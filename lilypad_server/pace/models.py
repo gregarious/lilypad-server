@@ -18,7 +18,7 @@ class Student(models.Model):
 class PeriodicRecord(models.Model):
     period = models.IntegerField()
     date = models.DateField()
-    student = models.ForeignKey(Student)
+    student = models.ForeignKey(Student, related_name='periodic_records')
 
     is_eligible = models.BooleanField(default=True)
 
@@ -27,6 +27,8 @@ class PeriodicRecord(models.Model):
     complete_work_points = models.IntegerField(null=True, blank=True)
     follow_directions_points = models.IntegerField(null=True, blank=True)
     be_safe_points = models.IntegerField(null=True, blank=True)
+
+    last_changed_at = models.DateTimeField(auto_now=True)
 
     def __unicode__(self):
         return '<%s_%d:%s>' % (self.date.strftime('%Y-%m-%d'), self.period, self.student)
@@ -51,11 +53,12 @@ class BehaviorIncidentType(models.Model):
 class BehaviorIncident(models.Model):
     type = models.ForeignKey(BehaviorIncidentType)
     started_at = models.DateTimeField()
-
     ended_at = models.DateTimeField(null=True, blank=True)
-    comment = models.TextField(blank=True)
 
+    comment = models.TextField(blank=True)
     student = models.ForeignKey(Student)
+
+    last_modified_at = models.DateTimeField(auto_now=True)
 
     def __unicode__(self):
         return '<%s@%s:%s>' % (self.type.label, self.started_at.strftime('%Y-%m-%d %H:%M:%S'), self.student)
