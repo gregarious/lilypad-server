@@ -56,7 +56,7 @@ class BehaviorIncident(models.Model):
     ended_at = models.DateTimeField(null=True, blank=True)
 
     comment = models.TextField(blank=True)
-    student = models.ForeignKey(Student)
+    student = models.ForeignKey(Student, related_name='behavior_incidents')
 
     last_modified_at = models.DateTimeField(auto_now=True)
 
