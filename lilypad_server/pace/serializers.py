@@ -23,14 +23,6 @@ from copy import copy
 #         return reverse(view_name, kwargs=kwargs, request=request, format=format)
 
 class StudentSerializer(serializers.HyperlinkedModelSerializer):
-
-    # behavior_point_record_collection = serializers.HyperlinkedIdentityField(
-    #     view_name='globalbehaviorpointrecord-list')
-
-    # no tests written yet
-    # discussion_collection = serializers.HyperlinkedIdentityField(
-    #     view_name='discussion-list')
-
     periodic_records = serializers.HyperlinkedRelatedField(many=True,
         read_only=True, view_name='periodicrecord-detail')
     behavior_incidents = serializers.HyperlinkedRelatedField(many=True,
@@ -41,6 +33,31 @@ class StudentSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('url', 'id', 'first_name', 'last_name',
             'periodic_records', 'behavior_incidents')
 
+# Might be useful for serializing point records into a dict
+#
+# class PointRecords(object):
+#     def __init__(self, kw, cd, fd, bs):
+#         self.kw = kw
+#         self.cd = cd
+#         self.fd = fd
+#         self.bs = bs
+
+# class PointRecordsField(serializers.WritableField):
+#     def field_from_native(self, data, files, field_name, into):
+#         return PointRecords(
+#             kw=data.get('kw', None),
+#             cd=data.get('cd', None),
+#             fd=data.get('fd', None),
+#             bs=data.get('bs', None)
+#         )
+
+#     def field_to_native(self, obj, field_name):
+#         return {
+#             'kw': obj.kind_words_points,
+#             'cw': obj.complete_work_points,
+#             'fd': obj.follow_directions_points,
+#             'bs': obj.be_safe_points
+#         }
 
 class PeriodicRecordSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -61,15 +78,3 @@ class BehaviorIncidentSerializer(serializers.HyperlinkedModelSerializer):
         model = BehaviorIncident
         fields = ('id', 'url', 'type', 'started_at', 'ended_at', 'comment',
             'student', 'last_modified_at')
-
-#     def __init__(self, *args, **kwargs):
-#         try:
-#             student_pk = kwargs.pop('student_pk')
-#         except KeyError:
-#             raise ValueError('GlobalBehaviorPointRecordSerializer must be'
-#                 'initialized with the parent `student_pk`')
-
-#         super(GlobalBehaviorPointRecordSerializer, self).__init__(*args, **kwargs)
-#         self.fields['url'] = ExtraArgsHyperlinkedIdentityField(
-#             view_name='globalbehaviorpointrecord-detail',
-#             extra_kwargs={'student_pk': student_pk})
