@@ -3,14 +3,17 @@ from django.contrib.auth.models import User
 
 class Classroom(models.Model):
     name = models.CharField(max_length=200)
-    staff = models.ManyToManyField(User)
+    staff = models.ManyToManyField(User, null=True, blank=True)
 
 class Student(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100,
         help_text="(or partial last name)")
 
-    classroom = models.ForeignKey(Classroom)
+    classroom = models.ForeignKey(Classroom, null=True, blank=True)
+
+    def __unicode__(self):
+        return u'%s %s' % (self.first_name, self.last_name)
 
 class PeriodicPointRecord(models.Model):
     period = models.IntegerField()
@@ -19,10 +22,15 @@ class PeriodicPointRecord(models.Model):
 
     is_eligible = models.BooleanField(default=True)
 
-    kind_words_points = models.IntegerField()
-    complete_work_points = models.IntegerField()
-    follow_directions_points = models.IntegerField()
-    be_safe_points = models.IntegerField()
+    # these are nullable if not eligible
+    kind_words_points = models.IntegerField(null=True, blank=True)
+    complete_work_points = models.IntegerField(null=True, blank=True)
+    follow_directions_points = models.IntegerField(null=True, blank=True)
+    be_safe_points = models.IntegerField(null=True, blank=True)
+
+    def __unicode__(self):
+        return '<%s_%d:%s>' % (self.date.strftime('%Y-%m-%d'), self.period, self.student)
+
 
 class BehaviorIncidentType(models.Model):
     code = models.CharField(max_length=6, blank=True)
@@ -33,6 +41,13 @@ class BehaviorIncidentType(models.Model):
         related_name='custom_behavior_types',
         help_text='Set if this type is a custom behavior for a student')
 
+    def __unicode__(self):
+        if self.applicable_student:
+            return '%s (custom: %s)' % (self.label, self.applicable_student)
+        else:
+            return self.label
+
+
 class BehaviorIncident(models.Model):
     type = models.ForeignKey(BehaviorIncidentType)
     started_at = models.DateTimeField()
@@ -41,6 +56,10 @@ class BehaviorIncident(models.Model):
     comment = models.TextField(blank=True)
 
     student = models.ForeignKey(Student)
+
+    def __unicode__(self):
+        return '<%s@%s:%s>' % (self.type.label, self.started_at.strftime('%Y-%m-%d %H:%M:%S'), self.student)
+
 
 
 # class Discussion(models.Model):
