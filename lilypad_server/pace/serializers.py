@@ -5,33 +5,25 @@ from pace.models import Student, PeriodicRecord, BehaviorIncidentType, BehaviorI
 from django.core.urlresolvers import NoReverseMatch
 from copy import copy
 
-# needed for old URL scheme -- not necessary anymore?
-# class ExtraArgsHyperlinkedIdentityField(serializers.HyperlinkedIdentityField):
-#     def __init__(self, *args, **kwargs):
-#         self.extra_kwargs = kwargs.pop('extra_kwargs', {})
-#         super(ExtraArgsHyperlinkedIdentityField, self).__init__(*args, **kwargs)
-
-#     def get_url(self, obj, view_name, request, format):
-#         '''
-#         Mimics base class's `get_url` field, inserting the extra kwargs
-#         into the reverse call, and trimming out all the special cases
-#         we're not intending to use.
-#         '''
-#         lookup_field = getattr(obj, self.lookup_field)
-#         kwargs = copy(self.extra_kwargs)
-#         kwargs.update({self.lookup_field: lookup_field})
-#         return reverse(view_name, kwargs=kwargs, request=request, format=format)
+class StudentStubSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Student
+        fields = ('id', 'url')
 
 class StudentSerializer(serializers.HyperlinkedModelSerializer):
-    periodic_records = serializers.HyperlinkedRelatedField(many=True,
-        read_only=True, view_name='periodicrecord-detail')
-    behavior_incidents = serializers.HyperlinkedRelatedField(many=True,
-        read_only=True, view_name='behaviorincident-detail')
+    # TODO: make these links to special student subresource views
+    periodic_records_url = serializers.HyperlinkedIdentityField(
+        view_name='student_periodicrecord-list')
+    behavior_types_url = serializers.HyperlinkedIdentityField(
+        view_name='student_behaviortype-list')
+    behavior_incidents_url = serializers.HyperlinkedIdentityField(
+        view_name='student_behaviorincident-list')
 
     class Meta:
         model = Student
         fields = ('url', 'id', 'first_name', 'last_name',
-            'periodic_records', 'behavior_incidents')
+            'periodic_records_url', 'behavior_types_url',
+            'behavior_incidents_url')
 
 # Might be useful for serializing point records into a dict
 #
@@ -60,6 +52,7 @@ class StudentSerializer(serializers.HyperlinkedModelSerializer):
 #         }
 
 class PeriodicRecordSerializer(serializers.HyperlinkedModelSerializer):
+    student = StudentStubSerializer()
     class Meta:
         model = PeriodicRecord
         fields = ('id', 'url', 'last_changed_at', 'period', 'date',
@@ -68,12 +61,14 @@ class PeriodicRecordSerializer(serializers.HyperlinkedModelSerializer):
             'be_safe_points')
 
 class BehaviorIncidentTypeSerializer(serializers.HyperlinkedModelSerializer):
+    applicable_student = StudentStubSerializer()
     class Meta:
         model = BehaviorIncidentType
         fields = ('id', 'url', 'label', 'code', 'supports_duration',
             'applicable_student')
 
 class BehaviorIncidentSerializer(serializers.HyperlinkedModelSerializer):
+    student = StudentStubSerializer()
     class Meta:
         model = BehaviorIncident
         fields = ('id', 'url', 'type', 'started_at', 'ended_at', 'comment',

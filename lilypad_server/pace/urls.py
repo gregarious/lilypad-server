@@ -9,6 +9,13 @@ urlpatterns = patterns('',
     url(r'^students/(?P<pk>[0-9]+)/$',
         views.StudentDetail.as_view(), name='student-detail'),
 
+    url(r'^students/(?P<pk>[0-9]+)/periodicrecords/$',
+        views.StudentPeriodicRecordList.as_view(), name='student_periodicrecord-list'),
+    url(r'^students/(?P<pk>[0-9]+)/behaviortypes/$',
+        views.StudentBehaviorIncidentTypeList.as_view(), name='student_behaviortype-list'),
+    url(r'^students/(?P<pk>[0-9]+)/behaviorincidents/$',
+        views.StudentBehaviorIncidentList.as_view(), name='student_behaviorincident-list'),
+
     url(r'^periodicrecords/$',
         views.PeriodicRecordList.as_view(), name='periodicrecord-list'),
     url(r'^periodicrecords/(?P<pk>[0-9]+)/$',
