@@ -69,6 +69,7 @@ class BehaviorIncidentTypeSerializer(serializers.HyperlinkedModelSerializer):
 
 class BehaviorIncidentSerializer(serializers.HyperlinkedModelSerializer):
     student = StudentStubSerializer()
+    type = BehaviorIncidentTypeSerializer()
     class Meta:
         model = BehaviorIncident
         fields = ('id', 'url', 'type', 'started_at', 'ended_at', 'comment',
