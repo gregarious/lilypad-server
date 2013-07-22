@@ -1,4 +1,4 @@
-# Lillypad Server
+# Lilypad Server
 
 A Django-based HTTP server hosting the Lilypad API.
 
