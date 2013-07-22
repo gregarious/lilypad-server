@@ -17,11 +17,11 @@ A Django-based HTTP server hosting the Lilypad API.
         $ pip install -r requirements.txt
 
 4. Three environment variables need to be set:
-    1. `DJANGO_SETTINGS_MODULE`: tells any Django process which settings file to use
-    2. `DATABASE_URL`: declares the local DB configuration.
-    3. `CLIENT_APP_PARENT`: the directory that houses various client-side app repositories
+    1. `DJANGO_SETTINGS_MODULE`: tells any Django process which settings file to use.
+    2. `DATABASE_URL`: declares the local DB configuration. You'll need to set up the backend on your own.
+    3. `CLIENT_APP_PARENT`: the directory that houses various client-side app repositories. See the note below.
 
-    The recommended way to do this (for development installations, at least) is to add this variable to your virtualenv. To do so, add the following lines to your `.virtualenvs/lilypad/bin/postactivate`:
+    The recommended way to do this (for development installations, at least) is to add this variable to your virtualenv. To do so, add the following lines to your `.virtualenvs/lilypad/bin/postactivate`, adjusting anything for your environment:
 
         export DJANGO_SETTINGS_MODULE='lilypad_server.settings.development'
         export DATABASE_URL='postgres://localhost/lilypad_development'
@@ -33,12 +33,16 @@ A Django-based HTTP server hosting the Lilypad API.
         unset DATABASE_URL
         unset CLIENT_APP_PARENT
 
-    _(As an example for_ `CLIENT_APP_PARENT`_, if the `lilypad-pace` project is cloned at `/lilypad/lilypad-client/lilypad-pace`, the setting would be `/lilypad/lilypad-client`.)_
+    _(As an example for_ `CLIENT_APP_PARENT`, _if the `lilypad-pace` project is cloned at `/lilypad/lilypad-client/lilypad-pace`, the setting would be `/lilypad/lilypad-client`.)_
 
+5. Initialize the database
 
-5. Launch the server:
+        $ python manage.py syncdb
+        $ python manage.py migrate
 
-        python manage.py runserver
+6. Launch the server:
+
+        $ python manage.py runserver
 
 
 ## Production Install Notes
