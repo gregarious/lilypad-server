@@ -33,7 +33,7 @@ A Django-based HTTP server hosting the Lilypad API.
         unset DATABASE_URL
         unset CLIENT_APP_PARENT
 
-    _(As an example for_ `CLIENT_APP_PARENT`, _if the `lilypad-pace` project is cloned at `/lilypad/lilypad-client/lilypad-pace`, the setting would be `/lilypad/lilypad-client`.)_
+    _(As an example for_ `CLIENT_APP_PARENT`, _if the `lilypad-pace` repository is cloned at `/home/john/lilypad/lilypad-pace`, the setting would be `/home/john/lilypad`.)_
 
 5. Initialize the database
 
@@ -47,5 +47,5 @@ A Django-based HTTP server hosting the Lilypad API.
 
 ## Production Install Notes
 
-Only the development environment is configured to server the client apps out of the box. Some care will have to be taken to hook
+Only the development environment is configured to serve the client apps out of the box. Some care will have to be taken to hook
 up the static URLs and index.html pages on a real web server.
