@@ -1,53 +1,76 @@
 from rest_framework import serializers
 from rest_framework.reverse import reverse
-from pace.models import Student, GlobalBehaviorPointRecord
+from pace.models import Student, PeriodicRecord, BehaviorIncidentType, BehaviorIncident
 
 from django.core.urlresolvers import NoReverseMatch
 from copy import copy
 
-class ExtraArgsHyperlinkedIdentityField(serializers.HyperlinkedIdentityField):
-    def __init__(self, *args, **kwargs):
-        self.extra_kwargs = kwargs.pop('extra_kwargs', {})
-        super(ExtraArgsHyperlinkedIdentityField, self).__init__(*args, **kwargs)
-
-    def get_url(self, obj, view_name, request, format):
-        '''
-        Mimics base class's `get_url` field, inserting the extra kwargs
-        into the reverse call, and trimming out all the special cases
-        we're not intending to use.
-        '''
-        lookup_field = getattr(obj, self.lookup_field)
-        kwargs = copy(self.extra_kwargs)
-        kwargs.update({self.lookup_field: lookup_field})
-        return reverse(view_name, kwargs=kwargs, request=request, format=format)
+class StudentStubSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Student
+        fields = ('id', 'url')
 
 class StudentSerializer(serializers.HyperlinkedModelSerializer):
-    behavior_point_record_collection = serializers.HyperlinkedIdentityField(
-        view_name='globalbehaviorpointrecord-list')
-
-    # no tests written yet
-    # discussion_collection = serializers.HyperlinkedIdentityField(
-    #     view_name='discussion-list')
+    # TODO: make these links to special student subresource views
+    periodic_records_url = serializers.HyperlinkedIdentityField(
+        view_name='student_periodicrecord-list')
+    behavior_types_url = serializers.HyperlinkedIdentityField(
+        view_name='student_behaviortype-list')
+    behavior_incidents_url = serializers.HyperlinkedIdentityField(
+        view_name='student_behaviorincident-list')
 
     class Meta:
         model = Student
         fields = ('url', 'id', 'first_name', 'last_name',
-            'behavior_point_record_collection')
+            'periodic_records_url', 'behavior_types_url',
+            'behavior_incidents_url')
 
-class GlobalBehaviorPointRecordSerializer(serializers.HyperlinkedModelSerializer):
+# Might be useful for serializing point records into a dict
+#
+# class PointRecords(object):
+#     def __init__(self, kw, cd, fd, bs):
+#         self.kw = kw
+#         self.cd = cd
+#         self.fd = fd
+#         self.bs = bs
+
+# class PointRecordsField(serializers.WritableField):
+#     def field_from_native(self, data, files, field_name, into):
+#         return PointRecords(
+#             kw=data.get('kw', None),
+#             cd=data.get('cd', None),
+#             fd=data.get('fd', None),
+#             bs=data.get('bs', None)
+#         )
+
+#     def field_to_native(self, obj, field_name):
+#         return {
+#             'kw': obj.kind_words_points,
+#             'cw': obj.complete_work_points,
+#             'fd': obj.follow_directions_points,
+#             'bs': obj.be_safe_points
+#         }
+
+class PeriodicRecordSerializer(serializers.HyperlinkedModelSerializer):
+    student = StudentStubSerializer()
     class Meta:
-        model = GlobalBehaviorPointRecord
-        fields = ('id', 'url', 'behavior_type', 'recorded_at', 'value',
-            'max_value', 'date', 'period')
+        model = PeriodicRecord
+        fields = ('id', 'url', 'last_changed_at', 'period', 'date',
+            'student', 'is_eligible', 'kind_words_points',
+            'complete_work_points', 'follow_directions_points',
+            'be_safe_points')
 
-    def __init__(self, *args, **kwargs):
-        try:
-            student_pk = kwargs.pop('student_pk')
-        except KeyError:
-            raise ValueError('GlobalBehaviorPointRecordSerializer must be'
-                'initialized with the parent `student_pk`')
+class BehaviorIncidentTypeSerializer(serializers.HyperlinkedModelSerializer):
+    applicable_student = StudentStubSerializer()
+    class Meta:
+        model = BehaviorIncidentType
+        fields = ('id', 'url', 'label', 'code', 'supports_duration',
+            'applicable_student')
 
-        super(GlobalBehaviorPointRecordSerializer, self).__init__(*args, **kwargs)
-        self.fields['url'] = ExtraArgsHyperlinkedIdentityField(
-            view_name='globalbehaviorpointrecord-detail',
-            extra_kwargs={'student_pk': student_pk})
+class BehaviorIncidentSerializer(serializers.HyperlinkedModelSerializer):
+    student = StudentStubSerializer()
+    type = BehaviorIncidentTypeSerializer()
+    class Meta:
+        model = BehaviorIncident
+        fields = ('id', 'url', 'type', 'started_at', 'ended_at', 'comment',
+            'student', 'last_modified_at')

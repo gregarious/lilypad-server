@@ -1,13 +1,18 @@
-from pace.models import Student
-from pace.serializers import StudentSerializer, GlobalBehaviorPointRecordSerializer
+from django.db.models import Q
+
+from pace.models import Student, PeriodicRecord
+from pace.models import BehaviorIncidentType, BehaviorIncident
+
+from pace.serializers import StudentSerializer, PeriodicRecordSerializer
+from pace.serializers import BehaviorIncidentSerializer, BehaviorIncidentTypeSerializer
 
 from django.http import Http404
-from rest_framework.views import APIView
-from rest_framework.response import Response
 from rest_framework import generics
-from rest_framework import status
 
-from django.http import HttpResponse
+from django.contrib.staticfiles.views import serve
+
+def index(request):
+    return serve(request, 'lilypad-pace/index.html')
 
 class StudentList(generics.ListAPIView):
     queryset = Student.objects.all()
@@ -17,67 +22,66 @@ class StudentDetail(generics.RetrieveAPIView):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
 
-class GlobalBehaviorPointRecordList(APIView):
-    def get_student_object(self, pk):
-        try:
-            return Student.objects.get(pk=pk)
-        except:
+class PeriodicRecordList(generics.ListAPIView):
+    queryset = PeriodicRecord.objects.all()
+    serializer_class = PeriodicRecordSerializer
+
+class PeriodicRecordDetail(generics.RetrieveAPIView):
+    queryset = PeriodicRecord.objects.all()
+    serializer_class = PeriodicRecordSerializer
+
+class StudentPeriodicRecordList(generics.ListAPIView):
+    serializer_class = PeriodicRecordSerializer
+
+    def get_queryset(self):
+        pk = self.kwargs.get('pk')
+        if pk is None:
             raise Http404
+        records = PeriodicRecord.objects.filter(student__pk=pk)
+        return records
 
-    def get(self, request, pk, format=None):
-        student = self.get_student_object(pk)
-        records = student.behavior_point_records
-        serializer = GlobalBehaviorPointRecordSerializer(
-            records, student_pk=pk, many=True,
-            context={'request': request})
-        return Response(serializer.data)
+class BehaviorIncidentTypeList(generics.ListAPIView):
+    queryset = BehaviorIncidentType.objects.all()
+    serializer_class = BehaviorIncidentTypeSerializer
 
-    def post(self, request, pk, format=None):
-        student = self.get_student_object(pk)
+class BehaviorIncidentTypeDetail(generics.RetrieveAPIView):
+    queryset = BehaviorIncidentType.objects.all()
+    serializer_class = BehaviorIncidentTypeSerializer
 
-        serializer = GlobalBehaviorPointRecordSerializer(
-            data=request.DATA,
-            student_pk=pk,
-            context={'request': request})
-        if serializer.is_valid():
-            new_record = serializer.save()
-            student.behavior_point_records.append(new_record)
-            student.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+class StudentBehaviorIncidentTypeList(generics.ListAPIView):
+    serializer_class = BehaviorIncidentTypeSerializer
 
-class GlobalBehaviorPointRecordDetail(APIView):
-    def get_objects(self, student_pk, record_pk):
-        try:
-            # don't want to access GlobalBehaviorPointRecord table
-            student = Student.objects.get(pk=student_pk)
-            records = [r for r in student.behavior_point_records if r.id == record_pk]
-            return student, records[0]
-        except:
+    def get_queryset(self):
+        pk = self.kwargs.get('pk')
+        if pk is None:
             raise Http404
+        records = BehaviorIncidentType.objects.filter(
+            Q(applicable_student__pk=pk) | Q(applicable_student__isnull=True))
+        return records
 
-    def get(self, request, student_pk, pk, format=None):
-        _, record = self.get_objects(student_pk, pk)
-        serializer = GlobalBehaviorPointRecordSerializer(
-            record, student_pk=student_pk, context={'request': request})
-        return Response(serializer.data)
+class BehaviorIncidentList(generics.ListAPIView):
+    queryset = BehaviorIncident.objects.all()
+    serializer_class = BehaviorIncidentSerializer
 
-    def put(self, request, student_pk, pk, format=None):
-        student, record = self.get_objects(student_pk, pk)
-        serializer = GlobalBehaviorPointRecordSerializer(
-            record, data=request.DATA, student_pk=student_pk,
-            context={'request': request})
-        if serializer.is_valid():
-            serializer.save()
-            student.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+class BehaviorIncidentDetail(generics.RetrieveAPIView):
+    queryset = BehaviorIncident.objects.all()
+    serializer_class = BehaviorIncidentSerializer
 
-# no tests written yet
-# def discussions_list(request, pk):
-#     return HttpResponse('discussions for student %s' %
-#         str(pk))
+class StudentBehaviorIncidentList(generics.ListAPIView):
+    serializer_class = BehaviorIncidentSerializer
 
-# def discussions_detail(request, student_pk, discussion_pk):
-#     return HttpResponse('discussion %s for student %s' %
-#         (str(discussion_pk), str(student_pk)))
+    def get_queryset(self):
+        pk = self.kwargs.get('pk')
+        if pk is None:
+            raise Http404
+        records = BehaviorIncident.objects.filter(student__pk=pk)
+        return records
+
+# # no tests written yet
+# # def discussions_list(request, pk):
+# #     return HttpResponse('discussions for student %s' %
+# #         str(pk))
+
+# # def discussions_detail(request, student_pk, discussion_pk):
+# #     return HttpResponse('discussion %s for student %s' %
+# #         (str(discussion_pk), str(student_pk)))

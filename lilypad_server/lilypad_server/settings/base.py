@@ -16,8 +16,11 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-# defined in installation-specific settings file
-DATABASES = {}
+# ensure DATABASE_URL env variable is defined: needed by dj_database_url
+if os.environ.get('DATABASE_URL') is None:
+    raise ImproperlyConfigured('Must define environment variable named DATABASE_URL')
+import dj_database_url
+DATABASES = {'default': dj_database_url.config()}
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.4/ref/settings/#allowed-hosts
@@ -27,7 +30,7 @@ ALLOWED_HOSTS = []
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
 # In a Windows environment this must be set to your system time zone.
-TIME_ZONE = 'America/Chicago'
+TIME_ZONE = 'US/Eastern'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
@@ -65,7 +68,7 @@ STATIC_ROOT = ''
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
-STATIC_URL = '/static/'
+STATIC_URL = '/lilypad-client/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
@@ -125,7 +128,7 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
 
     # third-party apps
-    'djangotoolbox',
+    'south',
     'django_extensions',
     'rest_framework',
 
