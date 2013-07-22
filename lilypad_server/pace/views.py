@@ -12,7 +12,7 @@ from rest_framework import generics
 from django.contrib.staticfiles.views import serve
 
 def index(request):
-    return serve(request, 'pace/index.html')
+    return serve(request, 'lilypad-pace/index.html')
 
 class StudentList(generics.ListAPIView):
     queryset = Student.objects.all()
