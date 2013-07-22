@@ -1,4 +1,5 @@
 from django.conf.urls import patterns, include, url
+from django.conf import settings
 from rest_framework.urlpatterns import format_suffix_patterns
 
 import views
@@ -39,3 +40,9 @@ urlpatterns = patterns('',
 )
 
 urlpatterns = format_suffix_patterns(urlpatterns)
+
+# in development mode, serve the index page with Django's dev server
+if settings.DEBUG:
+    urlpatterns += patterns('',
+        url('^$', views.index, name='pace-index'),
+    )

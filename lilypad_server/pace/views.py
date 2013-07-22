@@ -9,6 +9,11 @@ from pace.serializers import BehaviorIncidentSerializer, BehaviorIncidentTypeSer
 from django.http import Http404
 from rest_framework import generics
 
+from django.contrib.staticfiles.views import serve
+
+def index(request):
+    return serve(request, 'pace/index.html')
+
 class StudentList(generics.ListAPIView):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer

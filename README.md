@@ -16,18 +16,32 @@ A Django-based HTTP server hosting the Lilypad API.
 
         $ pip install -r requirements.txt
 
-4. Two environment variables need to be set: __(1)__ `DJANGO_SETTINGS_MODULE` to explicitly tell any Django process which settings file to use, and __(2)__ `DATABASE_URL` to declare the local installation DB configuration.
+4. Three environment variables need to be set:
+    1. `DJANGO_SETTINGS_MODULE`: tells any Django process which settings file to use
+    2. `DATABASE_URL`: declares the local DB configuration.
+    3. `CLIENT_APP_PARENT`: the directory that houses various client-side app repositories
 
-    The recommended way to do this (for development installations, at least) is to add this variable to your virtualenv. To do so, add the following line to your `.virtualenvs/lilypad/bin/postactivate`:
+    The recommended way to do this (for development installations, at least) is to add this variable to your virtualenv. To do so, add the following lines to your `.virtualenvs/lilypad/bin/postactivate`:
 
         export DJANGO_SETTINGS_MODULE='lilypad_server.settings.development'
         export DATABASE_URL='postgres://localhost/lilypad_development'
+        export CLIENT_APP_PARENT='/path/to/client/repos/parent'
 
     And this to `.virtualenvs/lilypad/bin/predeactivate`:
 
         unset DJANGO_SETTINGS_MODULE
         unset DATABASE_URL
+        unset CLIENT_APP_PARENT
+
+    _(As an example for_ `CLIENT_APP_PARENT`_, if the `lilypad-pace` project is cloned at `/lilypad/lilypad-client/lilypad-pace`, the setting would be `/lilypad/lilypad-client`.)_
+
 
 5. Launch the server:
 
         python manage.py runserver
+
+
+## Production Install Notes
+
+Only the development environment is configured to server the client apps out of the box. Some care will have to be taken to hook
+up the static URLs and index.html pages on a real web server.
