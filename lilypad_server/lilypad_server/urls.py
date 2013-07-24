@@ -10,5 +10,5 @@ urlpatterns = patterns('',
     url(r'^$', 'lilypad_server.views.home'),
     url(r'^admin/', include(admin.site.urls)),
 
-    url(r'^pace/', include(pace_urls))
+    url(r'^pace/', include(pace_urls, namespace='pace'))
 )

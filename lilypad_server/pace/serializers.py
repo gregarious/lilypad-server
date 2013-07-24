@@ -1,23 +1,20 @@
 from rest_framework import serializers
-from rest_framework.reverse import reverse
+from common.serializers import NamespacedHyperlinkedModelSerializer
+
 from pace.models import Student, PeriodicRecord, BehaviorIncidentType, BehaviorIncident
 
-from django.core.urlresolvers import NoReverseMatch
-from copy import copy
-
-class StudentStubSerializer(serializers.HyperlinkedModelSerializer):
+class StudentStubSerializer(NamespacedHyperlinkedModelSerializer):
     class Meta:
         model = Student
         fields = ('id', 'url')
 
-class StudentSerializer(serializers.HyperlinkedModelSerializer):
-    # TODO: make these links to special student subresource views
+class StudentSerializer(NamespacedHyperlinkedModelSerializer):
     periodic_records_url = serializers.HyperlinkedIdentityField(
-        view_name='student_periodicrecord-list')
+        view_name='pace:student_periodicrecord-list')
     behavior_types_url = serializers.HyperlinkedIdentityField(
-        view_name='student_behaviortype-list')
+        view_name='pace:student_behaviortype-list')
     behavior_incidents_url = serializers.HyperlinkedIdentityField(
-        view_name='student_behaviorincident-list')
+        view_name='pace:student_behaviorincident-list')
 
     class Meta:
         model = Student
@@ -51,7 +48,7 @@ class StudentSerializer(serializers.HyperlinkedModelSerializer):
 #             'bs': obj.be_safe_points
 #         }
 
-class PeriodicRecordSerializer(serializers.HyperlinkedModelSerializer):
+class PeriodicRecordSerializer(NamespacedHyperlinkedModelSerializer):
     student = StudentStubSerializer()
     class Meta:
         model = PeriodicRecord
@@ -60,14 +57,14 @@ class PeriodicRecordSerializer(serializers.HyperlinkedModelSerializer):
             'complete_work_points', 'follow_directions_points',
             'be_safe_points')
 
-class BehaviorIncidentTypeSerializer(serializers.HyperlinkedModelSerializer):
+class BehaviorIncidentTypeSerializer(NamespacedHyperlinkedModelSerializer):
     applicable_student = StudentStubSerializer()
     class Meta:
         model = BehaviorIncidentType
         fields = ('id', 'url', 'label', 'code', 'supports_duration',
             'applicable_student')
 
-class BehaviorIncidentSerializer(serializers.HyperlinkedModelSerializer):
+class BehaviorIncidentSerializer(NamespacedHyperlinkedModelSerializer):
     student = StudentStubSerializer()
     type = BehaviorIncidentTypeSerializer()
     class Meta:
