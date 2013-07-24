@@ -5,10 +5,12 @@ from django.contrib import admin
 admin.autodiscover()
 
 from pace import urls as pace_urls
+from plea import urls as plea_urls
 
 urlpatterns = patterns('',
     url(r'^$', 'lilypad_server.views.home'),
     url(r'^admin/', include(admin.site.urls)),
 
-    url(r'^pace/', include(pace_urls, namespace='pace'))
+    url(r'^pace/', include(pace_urls, namespace='pace')),
+    url(r'^plea/', include(plea_urls, namespace='plea'))
 )
