@@ -17,10 +17,10 @@ class StudentSerializer(NamespacedHyperlinkedModelSerializer):
     class Meta:
         model = Student
         fields = ('url', 'id', 'first_name', 'last_name', 'date_of_birth',
-            'behavior_types_url', 'behavior_incidents_url')
+            'charts_url', 'behavior_types_url', 'behavior_incidents_url')
 
 class BehaviorIncidentTypeSerializer(NamespacedHyperlinkedModelSerializer):
-    applicable_student = stub_serializer_factory(Student)
+    student = stub_serializer_factory(Student)
 
     class Meta:
         model = BehaviorIncidentType
@@ -32,15 +32,15 @@ class BehaviorIncidentSerializer(NamespacedHyperlinkedModelSerializer):
 
     class Meta:
         model = BehaviorIncident
-        fields = ('id', 'url', 'type', 'occurred_at' 'comment', 'student')
+        fields = ('id', 'url', 'type', 'occurred_at', 'comment', 'student')
 
 class SubtopicSerializer(NamespacedHyperlinkedModelSerializer):
     class Meta:
         model = Subtopic
-        fields = ('id', 'url', 'name', 'menu_order')
+        fields = ('name', 'menu_order')
 
 class TopicSerializer(NamespacedHyperlinkedModelSerializer):
-    subtopics = SubtopicSerializer()
+    subtopics = SubtopicSerializer(many=True)
 
     class Meta:
         model = Topic
@@ -64,11 +64,15 @@ class ChartSerializer(NamespacedHyperlinkedModelSerializer):
     student = stub_serializer_factory(Student)
 
     day_metrics_url = serializers.HyperlinkedIdentityField(
-        view_name='pace:chart_daymetric-list')
+        view_name='plea:chart_daymetric-list')
+    phase_lines_url = serializers.HyperlinkedIdentityField(
+        view_name='plea:chart_phaseline-list')
 
     class Meta:
         model = Chart
-        fields = ('id', 'url', 'created_at', 'last_opened_at', 'topic', 'subtopic', 'input_channel', 'output_channel', 'label', 'student')
+        fields = ('id', 'url', 'created_at', 'last_opened_at', 'topic',
+            'subtopic', 'input_channel', 'output_channel', 'label', 'student',
+            'day_metrics_url', 'phase_lines_url')
 
 class DayMetricSerializer(NamespacedHyperlinkedModelSerializer):
     chart = stub_serializer_factory(Chart)

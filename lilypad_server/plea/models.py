@@ -47,7 +47,7 @@ class Subtopic(models.Model):
     class Meta:
         ordering = ('menu_order',)
 
-    topic = models.ForeignKey(Topic)
+    topic = models.ForeignKey(Topic, related_name='subtopics')
     name = models.CharField(max_length=30)
     menu_order = models.IntegerField(default=0)
 
@@ -107,7 +107,7 @@ class DayMetric(models.Model):
     chart = models.ForeignKey(Chart)
 
     def __unicode__(self):
-        return '<%s@%s:%s>' % (METRIC_TYPE_CHOICES[self.type], self.occurred_at.strftime('%Y-%m-%d %H:%M:%S'), self.chart)
+        return '<%s@%s:%s>' % (METRIC_TYPE_CHOICES[self.type][1], self.date.strftime('%Y-%m-%d'), self.chart)
 
 
 class PhaseLine(models.Model):
@@ -117,4 +117,4 @@ class PhaseLine(models.Model):
     chart = models.ForeignKey(Chart)
 
     def __unicode__(self):
-        return '<%s@%s:%s>' % (title, self.occurred_at.strftime('%Y-%m-%d %H:%M:%S'), self.chart)
+        return '<%s@%s:%s>' % (self.title, self.date.strftime('%Y-%m-%d %H:%M:%S'), self.chart)
