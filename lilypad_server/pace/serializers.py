@@ -1,12 +1,7 @@
 from rest_framework import serializers
-from common.serializers import NamespacedHyperlinkedModelSerializer
+from common.serializers import NamespacedHyperlinkedModelSerializer, stub_serializer_factory
 
 from pace.models import Student, PeriodicRecord, BehaviorIncidentType, BehaviorIncident
-
-class StudentStubSerializer(NamespacedHyperlinkedModelSerializer):
-    class Meta:
-        model = Student
-        fields = ('id', 'url')
 
 class StudentSerializer(NamespacedHyperlinkedModelSerializer):
     periodic_records_url = serializers.HyperlinkedIdentityField(
@@ -49,7 +44,7 @@ class StudentSerializer(NamespacedHyperlinkedModelSerializer):
 #         }
 
 class PeriodicRecordSerializer(NamespacedHyperlinkedModelSerializer):
-    student = StudentStubSerializer()
+    student = stub_serializer_factory(Student)
     class Meta:
         model = PeriodicRecord
         fields = ('id', 'url', 'last_changed_at', 'period', 'date',
@@ -58,14 +53,14 @@ class PeriodicRecordSerializer(NamespacedHyperlinkedModelSerializer):
             'be_safe_points')
 
 class BehaviorIncidentTypeSerializer(NamespacedHyperlinkedModelSerializer):
-    applicable_student = StudentStubSerializer()
+    applicable_student = stub_serializer_factory(Student)
     class Meta:
         model = BehaviorIncidentType
         fields = ('id', 'url', 'label', 'code', 'supports_duration',
             'applicable_student')
 
 class BehaviorIncidentSerializer(NamespacedHyperlinkedModelSerializer):
-    student = StudentStubSerializer()
+    student = stub_serializer_factory(Student)
     type = BehaviorIncidentTypeSerializer()
     class Meta:
         model = BehaviorIncident
