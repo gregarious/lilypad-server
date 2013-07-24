@@ -134,6 +134,7 @@ INSTALLED_APPS = (
 
     # our apps
     'pace',
+    'plea',
 )
 
 # A sample logging configuration. The only tangible logging
