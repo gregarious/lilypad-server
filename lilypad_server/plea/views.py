@@ -1,5 +1,3 @@
-from django.db.models import Q
-
 from plea.models import Student, BehaviorIncidentType, BehaviorIncident
 from plea.models import Topic, Subtopic, InputChannel, OutputChannel
 from plea.models import Chart, DayMetric, PhaseLine
@@ -7,7 +5,7 @@ from plea.models import Chart, DayMetric, PhaseLine
 from plea.serializers import StudentSerializer
 from plea.serializers import BehaviorIncidentSerializer, BehaviorIncidentTypeSerializer
 from plea.serializers import TopicSerializer, SubtopicSerializer, InputChannelSerializer, OutputChannelSerializer
-from plea.serializers import ChartSerializer, DayMetricSerializer, PhaseLineSerializer, OutputChannelSerializer
+from plea.serializers import ChartSerializer, DayMetricSerializer, PhaseLineSerializer
 
 from django.http import Http404
 from rest_framework import generics
