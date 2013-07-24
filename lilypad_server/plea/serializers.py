@@ -11,6 +11,9 @@ class StudentSerializer(NamespacedHyperlinkedModelSerializer):
     behavior_incidents_url = serializers.HyperlinkedIdentityField(
         view_name='plea:student_behaviorincident-list')
 
+    charts_url = serializers.HyperlinkedIdentityField(
+        view_name='plea:student_chart-list')
+
     class Meta:
         model = Student
         fields = ('url', 'id', 'first_name', 'last_name', 'date_of_birth',
@@ -65,7 +68,7 @@ class ChartSerializer(NamespacedHyperlinkedModelSerializer):
 
     class Meta:
         model = Chart
-        fields = ('id', 'url', 'topic', 'subtopic', 'input_channel', 'output_channel', 'student')
+        fields = ('id', 'url', 'created_at', 'last_opened_at', 'topic', 'subtopic', 'input_channel', 'output_channel', 'label', 'student')
 
 class DayMetricSerializer(NamespacedHyperlinkedModelSerializer):
     chart = stub_serializer_factory(Chart)
