@@ -6,13 +6,17 @@ from pace.models import BehaviorIncidentType, BehaviorIncident
 from pace.serializers import StudentSerializer, PeriodicRecordSerializer
 from pace.serializers import BehaviorIncidentSerializer, BehaviorIncidentTypeSerializer
 
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from rest_framework import generics
 
 from django.contrib.staticfiles.views import serve
 
 def index(request):
-    return serve(request, 'lilypad-pace/index.html')
+    try:
+        return serve(request, 'lilypad-pace/index.html')
+    except Http404:
+        return HttpResponse('Server is configured incorrectly: '
+            'no index.html file was found for the Pace app.', status=404)
 
 class StudentList(generics.ListAPIView):
     queryset = Student.objects.all()

@@ -7,13 +7,17 @@ from plea.serializers import BehaviorIncidentSerializer, BehaviorIncidentTypeSer
 from plea.serializers import TopicSerializer, SubtopicSerializer, InputChannelSerializer, OutputChannelSerializer
 from plea.serializers import ChartSerializer, DayMetricSerializer, PhaseLineSerializer
 
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from rest_framework import generics
 
 from django.contrib.staticfiles.views import serve
 
 def index(request):
-    return serve(request, 'lilypad-plea/index.html')
+    try:
+        return serve(request, 'lilypad-plea/index.html')
+    except Http404:
+        return HttpResponse('Server is configured incorrectly: '
+            'no index.html file was found for the PLEA app.', status=404)
 
 class StudentList(generics.ListAPIView):
     queryset = Student.objects.all()
