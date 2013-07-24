@@ -25,16 +25,13 @@ class BehaviorIncidentType(models.Model):
 
 class BehaviorIncident(models.Model):
     type = models.ForeignKey(BehaviorIncidentType)
-    started_at = models.DateTimeField()
-    ended_at = models.DateTimeField(null=True, blank=True)
+    occurred_at = models.DateTimeField()
 
     comment = models.TextField(blank=True)
     student = models.ForeignKey(Student, related_name='behavior_incidents')
 
-    last_modified_at = models.DateTimeField(auto_now=True)
-
     def __unicode__(self):
-        return '<%s@%s:%s>' % (self.type.label, self.started_at.strftime('%Y-%m-%d %H:%M:%S'), self.student)
+        return '<%s@%s:%s>' % (self.type.label, self.occurred_at.strftime('%Y-%m-%d %H:%M:%S'), self.student)
 
 class Topic(models.Model):
     class Meta:
