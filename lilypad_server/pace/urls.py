@@ -32,11 +32,12 @@ urlpatterns = patterns('',
     url(r'^behaviortypes/(?P<pk>[0-9]+)/$',
         views.BehaviorIncidentTypeDetail.as_view(), name='behaviorincidenttype-detail'),
 
-    # no tests written yet
-    # url(r'^students/(?P<pk>[0-9a-f]+)/discussions/$',
-    #     views.discussions_list, name='discussions-list'),
-    # url(r'^students/(?P<student_pk>[0-9a-f]+)/discussions/(?P<discussion_pk>[0-9a-f]+)/$',
-    #     views.discussions_detail, name='discussions-detail'),
+    url(r'^posts/$',
+        views.PostList.as_view(), name='post-list'),
+    url(r'^posts/(?P<pk>[0-9]+)/$',
+        views.PostDetail.as_view(), name='post-detail'),
+    url(r'^students/(?P<pk>[0-9]+)/posts/$',
+        views.StudentPostList.as_view(), name='student_post-list'),
 )
 
 urlpatterns = format_suffix_patterns(urlpatterns)

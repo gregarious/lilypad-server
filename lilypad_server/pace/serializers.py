@@ -1,7 +1,8 @@
 from rest_framework import serializers
 from common.serializers import NamespacedHyperlinkedModelSerializer, stub_serializer_factory
 
-from pace.models import Student, PeriodicRecord, BehaviorIncidentType, BehaviorIncident
+from django.contrib.auth.models import User
+from pace.models import Student, PeriodicRecord, BehaviorIncidentType, BehaviorIncident, Post, ReplyPost
 
 class StudentSerializer(NamespacedHyperlinkedModelSerializer):
     periodic_records_url = serializers.HyperlinkedIdentityField(
@@ -45,6 +46,7 @@ class StudentSerializer(NamespacedHyperlinkedModelSerializer):
 
 class PeriodicRecordSerializer(NamespacedHyperlinkedModelSerializer):
     student = stub_serializer_factory(Student)
+
     class Meta:
         model = PeriodicRecord
         fields = ('id', 'url', 'last_changed_at', 'period', 'date',
@@ -54,6 +56,7 @@ class PeriodicRecordSerializer(NamespacedHyperlinkedModelSerializer):
 
 class BehaviorIncidentTypeSerializer(NamespacedHyperlinkedModelSerializer):
     applicable_student = stub_serializer_factory(Student)
+
     class Meta:
         model = BehaviorIncidentType
         fields = ('id', 'url', 'label', 'code', 'supports_duration',
@@ -62,7 +65,27 @@ class BehaviorIncidentTypeSerializer(NamespacedHyperlinkedModelSerializer):
 class BehaviorIncidentSerializer(NamespacedHyperlinkedModelSerializer):
     student = stub_serializer_factory(Student)
     type = BehaviorIncidentTypeSerializer()
+
     class Meta:
         model = BehaviorIncident
         fields = ('id', 'url', 'type', 'started_at', 'ended_at', 'comment',
             'student', 'last_modified_at')
+
+class ReplyPostSerializer(serializers.ModelSerializer):
+    # TODO: make this a true User stub when user model worked out
+    author = serializers.RelatedField()
+
+    class Meta:
+        model = ReplyPost
+        fields = ('author', 'content', 'created_at')
+
+class PostSerializer(NamespacedHyperlinkedModelSerializer):
+    # TODO: make this a true User stub when user model worked out
+    author = serializers.RelatedField()
+    student = stub_serializer_factory(Student)
+    replies = ReplyPostSerializer(many=True)
+
+    class Meta:
+        model = Post
+        fields = ('id', 'url', 'author', 'student', 'content', 'created_at', 'replies')
+

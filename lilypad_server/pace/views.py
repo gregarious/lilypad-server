@@ -2,9 +2,11 @@ from django.db.models import Q
 
 from pace.models import Student, PeriodicRecord
 from pace.models import BehaviorIncidentType, BehaviorIncident
+from pace.models import Post, ReplyPost
 
 from pace.serializers import StudentSerializer, PeriodicRecordSerializer
 from pace.serializers import BehaviorIncidentSerializer, BehaviorIncidentTypeSerializer
+from pace.serializers import PostSerializer
 
 from django.http import Http404, HttpResponse
 from rest_framework import generics
@@ -80,6 +82,25 @@ class StudentBehaviorIncidentList(generics.ListAPIView):
             raise Http404
         records = BehaviorIncident.objects.filter(student__pk=pk)
         return records
+
+class PostList(generics.ListAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+
+class PostDetail(generics.RetrieveAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+
+class StudentPostList(generics.ListAPIView):
+    serializer_class = PostSerializer
+
+    def get_queryset(self):
+        pk = self.kwargs.get('pk')
+        if pk is None:
+            raise Http404
+        posts = Post.objects.filter(student__pk=pk)
+        return posts
+
 
 # # no tests written yet
 # # def discussions_list(request, pk):
