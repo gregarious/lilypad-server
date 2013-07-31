@@ -7,7 +7,7 @@ admin.site.register(PeriodicRecord)
 admin.site.register(BehaviorIncidentType)
 admin.site.register(BehaviorIncident)
 
-class ReplyInline(admin.StackedInline):
+class ReplyInline(admin.TabularInline):
     model = ReplyPost
 
 class PostAdmin(admin.ModelAdmin):
