@@ -11,7 +11,7 @@ class ReplyInline(admin.TabularInline):
     model = ReplyPost
 
 class PostAdmin(admin.ModelAdmin):
-    inlines =[
+    inlines = [
         ReplyInline
     ]
 
