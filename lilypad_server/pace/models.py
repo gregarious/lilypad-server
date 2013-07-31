@@ -76,19 +76,4 @@ class Post(BasePost):
     student = models.ForeignKey(Student)
 
 class ReplyPost(BasePost):
-    parent_post = models.ForeignKey(Post)
-
-# class Discussion(models.Model):
-#     title = models.CharField(max_length=200)
-#     notes = ListField(EmbeddedModelField('Note'), editable=False)
-
-# class Note(models.Model):
-#     created_at = models.DateTimeField(auto_now_add=True)
-
-#     content = models.TextField(blank=True)
-#     author_oid = models.CharField(max_length=24,
-#         help_text='ObjectID string for auth.User object')
-
-#     @property
-#     def author(self):
-#         User.objects.get(id=self.author_oid)
+    parent_post = models.ForeignKey(Post, related_name='replies')
