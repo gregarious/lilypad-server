@@ -13,6 +13,8 @@ from rest_framework import generics
 
 from django.contrib.staticfiles.views import serve
 
+from dateutil import parser
+
 def index(request):
     try:
         return serve(request, 'lilypad-pace/index.html')
@@ -29,22 +31,28 @@ class StudentDetail(generics.RetrieveAPIView):
     serializer_class = StudentSerializer
 
 class PeriodicRecordList(generics.ListAPIView):
-    queryset = PeriodicRecord.objects.all()
     serializer_class = PeriodicRecordSerializer
+    def get_queryset(self):
+        queryset = PeriodicRecord.objects.all()
+        for key in ('date', 'date__gte', 'date__lt',):
+            iso_string = self.request.QUERY_PARAMS.get(key, None)
+            if iso_string:
+                queryset = queryset.filter(**{key: parser.parse(iso_string).date()})
+        return queryset
 
 class PeriodicRecordDetail(generics.RetrieveAPIView):
     queryset = PeriodicRecord.objects.all()
     serializer_class = PeriodicRecordSerializer
 
-class StudentPeriodicRecordList(generics.ListAPIView):
+class StudentPeriodicRecordList(PeriodicRecordList):
     serializer_class = PeriodicRecordSerializer
 
     def get_queryset(self):
         pk = self.kwargs.get('pk')
         if pk is None:
             raise Http404
-        records = PeriodicRecord.objects.filter(student__pk=pk)
-        return records
+        queryset = super(StudentPeriodicRecordList, self).get_queryset()
+        return queryset.filter(student__pk=pk)
 
 class BehaviorIncidentTypeList(generics.ListAPIView):
     queryset = BehaviorIncidentType.objects.all()
@@ -66,22 +74,28 @@ class StudentBehaviorIncidentTypeList(generics.ListAPIView):
         return records
 
 class BehaviorIncidentList(generics.ListAPIView):
-    queryset = BehaviorIncident.objects.all()
     serializer_class = BehaviorIncidentSerializer
+    def get_queryset(self):
+        queryset = BehaviorIncident.objects.all()
+        for key in ('started_at__gte', 'started_at__lt',):
+            iso_string = self.request.QUERY_PARAMS.get(key, None)
+            if iso_string:
+                queryset = queryset.filter(**{key: parser.parse(iso_string)})
+        return queryset
 
 class BehaviorIncidentDetail(generics.RetrieveAPIView):
     queryset = BehaviorIncident.objects.all()
     serializer_class = BehaviorIncidentSerializer
 
-class StudentBehaviorIncidentList(generics.ListAPIView):
+class StudentBehaviorIncidentList(BehaviorIncidentList):
     serializer_class = BehaviorIncidentSerializer
 
     def get_queryset(self):
         pk = self.kwargs.get('pk')
         if pk is None:
             raise Http404
-        records = BehaviorIncident.objects.filter(student__pk=pk)
-        return records
+        queryset = super(StudentBehaviorIncidentList, self).get_queryset()
+        return queryset.filter(student__pk=pk)
 
 class PostList(generics.ListAPIView):
     queryset = Post.objects.all()
