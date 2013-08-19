@@ -33,12 +33,57 @@ class PeriodicRecord(models.Model):
     def __unicode__(self):
         return '<%s_%d:%s>' % (self.date.strftime('%Y-%m-%d'), self.period, self.student)
 
+    def _decrement(self, attribute):
+        current = getattr(self, attribute)
+        if current <= 0:
+            raise ValueError('Cannot decrement: Value already 0')
+        setattr(self, attribute, current-1)
 
+    def declare_point_loss(self, point_type):
+        '''
+        Decrement a point value and create a record of it with a PointLoss
+        object. `point_loss` should be a constant from the POINT_CATEGORIES_*
+        choices.
+
+        Returns the new PointLoss object. If value for point_type is already
+        0, None will be returned instead. Will raise ValueError if unknown
+        type is provided.
+
+        This factory method should be the *only* place PointLoss models are
+        created.
+        '''
+        unknown_type = False
+        try:
+            if point_type == POINT_CATEGORIES_KW:
+                self._decrement('kind_words_points')
+            elif point_type == POINT_CATEGORIES_CW:
+                self._decrement('complete_work_points')
+            elif point_type == POINT_CATEGORIES_FD:
+                self._decrement('follow_directions_points')
+            elif point_type == POINT_CATEGORIES_BS:
+                self._decrement('be_safe_points')
+            else:
+                unknown_type = True
+        except ValueError:
+            return None
+
+        if unknown_type:
+            raise ValueError('Unsupported point_type: %s' % (str(point_type)))
+
+        return PointLoss.objects.create(periodic_record=self,
+            point_type=point_type)
+
+
+# constant values for point loss type
+POINT_CATEGORIES_KW = 'kw'
+POINT_CATEGORIES_CW = 'cw'
+POINT_CATEGORIES_FD = 'fd'
+POINT_CATEGORIES_BS = 'bs'
 POINT_CATEGORIES = (
-    ('kw', 'Kind Words'),
-    ('cw', 'Complete Work'),
-    ('fd', 'Follow Directions'),
-    ('bs', 'Be Safe'),
+    (POINT_CATEGORIES_KW, 'Kind Words'),
+    (POINT_CATEGORIES_CW, 'Complete Work'),
+    (POINT_CATEGORIES_FD, 'Follow Directions'),
+    (POINT_CATEGORIES_BS, 'Be Safe'),
 )
 class PointLoss(models.Model):
     occurred_at = models.DateTimeField(auto_now_add=True)

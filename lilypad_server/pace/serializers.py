@@ -2,8 +2,8 @@ from rest_framework import serializers
 from common.serializers import NamespacedHyperlinkedModelSerializer, stub_serializer_factory
 
 from django.contrib.auth.models import User
-from pace.models import Student, PeriodicRecord, PointLoss,
-                        BehaviorIncidentType, BehaviorIncident,
+from pace.models import Student, PeriodicRecord, PointLoss,     \
+                        BehaviorIncidentType, BehaviorIncident, \
                         Post, ReplyPost
 
 class StudentSerializer(NamespacedHyperlinkedModelSerializer):
