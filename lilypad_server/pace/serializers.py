@@ -4,7 +4,7 @@ from common.serializers import NamespacedHyperlinkedModelSerializer, stub_serial
 from django.contrib.auth.models import User
 from pace.models import Student, PeriodicRecord, PointLoss,     \
                         BehaviorIncidentType, BehaviorIncident, \
-                        Post, ReplyPost
+                        Post, ReplyPost, AttendanceSpan
 
 class StudentSerializer(NamespacedHyperlinkedModelSerializer):
     periodic_records_url = serializers.HyperlinkedIdentityField(
@@ -17,13 +17,15 @@ class StudentSerializer(NamespacedHyperlinkedModelSerializer):
         view_name='pace:student_behaviorincident-list')
     posts_url = serializers.HyperlinkedIdentityField(
         view_name='pace:student_post-list')
+    attendancespans_url = serializers.HyperlinkedIdentityField(
+        view_name='pace:student_attendancespan-list')
 
     class Meta:
         model = Student
         fields = ('url', 'id', 'first_name', 'last_name',
             'periodic_records_url', 'point_losses_url',
             'behavior_types_url', 'behavior_incidents_url',
-            'posts_url')
+            'posts_url', 'attendancespans_url')
 
 # Might be useful for serializing point records into a dict
 #
@@ -104,3 +106,9 @@ class PostSerializer(NamespacedHyperlinkedModelSerializer):
         model = Post
         fields = ('id', 'url', 'author', 'student', 'content', 'created_at', 'replies')
 
+class AttendanceSpanSerializer(NamespacedHyperlinkedModelSerializer):
+    student = stub_serializer_factory(Student)
+
+    class Meta:
+        model = AttendanceSpan
+        fields = ('id', 'url', 'student', 'date', 'time_in', 'time_out')

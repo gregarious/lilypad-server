@@ -2,11 +2,12 @@ from django.db.models import Q
 
 from pace.models import Student, PeriodicRecord, PointLoss,     \
                         BehaviorIncidentType, BehaviorIncident, \
-                        Post, ReplyPost
+                        Post, ReplyPost, AttendanceSpan
 
 from pace.serializers import StudentSerializer, PeriodicRecordSerializer,     \
                              PointLossSerializer, BehaviorIncidentSerializer, \
-                             BehaviorIncidentTypeSerializer, PostSerializer
+                             BehaviorIncidentTypeSerializer, PostSerializer,  \
+                             AttendanceSpanSerializer
 
 from django.http import Http404, HttpResponse
 from rest_framework import generics
@@ -135,12 +136,34 @@ class StudentPostList(generics.ListAPIView):
         posts = Post.objects.filter(student__pk=pk)
         return posts
 
+class AttendanceSpanList(generics.ListAPIView):
+    serializer_class = AttendanceSpanSerializer
 
-# # no tests written yet
-# # def discussions_list(request, pk):
-# #     return HttpResponse('discussions for student %s' %
-# #         str(pk))
+    # TODO: enable PUT functionality
 
-# # def discussions_detail(request, student_pk, discussion_pk):
-# #     return HttpResponse('discussion %s for student %s' %
-# #         (str(discussion_pk), str(student_pk)))
+    def get_queryset(self):
+        queryset = AttendanceSpan.objects.all()
+        for key in ('date', 'date__lt', 'date__lte', 'date__gt', 'date__gte'):
+            iso_string = self.request.QUERY_PARAMS.get(key, None)
+            if iso_string:
+                queryset = queryset.filter(**{key: parser.parse(iso_string).date()})
+
+        for key in ('time_in', 'time_in__gt', 'time_in__gte', 'time_in__lt', 'time_in__lte',
+                    'time_out', 'time_out__gt', 'time_out__gte', 'time_out__lt', 'time_out__lte'):
+            iso_string = self.request.QUERY_PARAMS.get(key, None)
+            if iso_string:
+                queryset = queryset.filter(**{key: parser.parse(iso_string).time()})
+
+        return queryset
+
+class AttendanceSpanDetail(generics.RetrieveAPIView):
+    queryset = AttendanceSpan.objects.all()
+    serializer_class = AttendanceSpanSerializer
+
+class StudentAttendanceSpanList(AttendanceSpanList):
+    def get_queryset(self):
+        pk = self.kwargs.get('pk')
+        if pk is None:
+            raise Http404
+        queryset = super(StudentAttendanceSpanList, self).get_queryset()
+        return queryset.filter(student__pk=pk)

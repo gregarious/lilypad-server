@@ -1,6 +1,6 @@
 from pace.models import Student, PeriodicRecord, PointLoss, \
                         BehaviorIncidentType, BehaviorIncident, \
-                        Post, ReplyPost
+                        Post, ReplyPost, AttendanceSpan
 from django.contrib import admin
 
 admin.site.register(Student)
@@ -8,6 +8,7 @@ admin.site.register(PeriodicRecord)
 admin.site.register(PointLoss)
 admin.site.register(BehaviorIncidentType)
 admin.site.register(BehaviorIncident)
+admin.site.register(AttendanceSpan)
 
 class ReplyInline(admin.TabularInline):
     model = ReplyPost

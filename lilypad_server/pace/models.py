@@ -109,7 +109,6 @@ class BehaviorIncidentType(models.Model):
         else:
             return self.label
 
-
 class BehaviorIncident(models.Model):
     type = models.ForeignKey(BehaviorIncidentType)
     started_at = models.DateTimeField()
@@ -137,3 +136,15 @@ class Post(BasePost):
 
 class ReplyPost(BasePost):
     parent_post = models.ForeignKey(Post, related_name='replies')
+
+class AttendanceSpan(models.Model):
+    student = models.ForeignKey(Student)
+    date = models.DateField()
+    time_in = models.TimeField(null=True, blank=True)
+    time_out = models.TimeField(null=True, blank=True)
+
+    class Meta:
+        ordering = ('date', 'time_in', 'time_out',)
+
+    def __unicode__(self):
+        return "%s: %s" % (self.student, self.date.strftime('%Y-%m-%d'))
