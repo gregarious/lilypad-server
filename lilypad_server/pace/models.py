@@ -91,6 +91,9 @@ class PointLoss(models.Model):
     point_type = models.CharField(max_length=4, choices=POINT_CATEGORIES)
     comment = models.TextField(blank=True)
 
+    def __unicode__(self):
+        return "<'%s' loss for record #%s @%s>" % (self.point_type, self.periodic_record.id, self.occurred_at.strftime('%Y-%m-%dT%H:%I:%S'),)
+
 class BehaviorIncidentType(models.Model):
     code = models.CharField(max_length=6, blank=True)
     label = models.CharField(max_length=100)
