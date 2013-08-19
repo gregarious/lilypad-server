@@ -2,7 +2,9 @@ from rest_framework import serializers
 from common.serializers import NamespacedHyperlinkedModelSerializer, stub_serializer_factory
 
 from django.contrib.auth.models import User
-from pace.models import Student, PeriodicRecord, BehaviorIncidentType, BehaviorIncident, Post, ReplyPost
+from pace.models import Student, PeriodicRecord, PointLoss,
+                        BehaviorIncidentType, BehaviorIncident,
+                        Post, ReplyPost
 
 class StudentSerializer(NamespacedHyperlinkedModelSerializer):
     periodic_records_url = serializers.HyperlinkedIdentityField(
@@ -55,6 +57,14 @@ class PeriodicRecordSerializer(NamespacedHyperlinkedModelSerializer):
             'student', 'is_eligible', 'kind_words_points',
             'complete_work_points', 'follow_directions_points',
             'be_safe_points')
+
+class PointLossSerializer(NamespacedHyperlinkedModelSerializer):
+    periodic_record = stub_serializer_factory(PeriodicRecord)
+
+    class Meta:
+        model = PeriodicRecord
+        fields = ('id', 'url', 'occurred_at', 'periodic_record',
+            'point_type', 'comment')
 
 class BehaviorIncidentTypeSerializer(NamespacedHyperlinkedModelSerializer):
     applicable_student = stub_serializer_factory(Student)

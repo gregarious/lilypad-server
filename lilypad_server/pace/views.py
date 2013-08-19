@@ -4,9 +4,9 @@ from pace.models import Student, PeriodicRecord
 from pace.models import BehaviorIncidentType, BehaviorIncident
 from pace.models import Post, ReplyPost
 
-from pace.serializers import StudentSerializer, PeriodicRecordSerializer
-from pace.serializers import BehaviorIncidentSerializer, BehaviorIncidentTypeSerializer
-from pace.serializers import PostSerializer
+from pace.serializers import StudentSerializer, PeriodicRecordSerializer,
+                             PointLossSerializer, BehaviorIncidentSerializer,
+                             BehaviorIncidentTypeSerializer, PostSerializer
 
 from django.http import Http404, HttpResponse
 from rest_framework import generics
@@ -53,6 +53,29 @@ class StudentPeriodicRecordList(PeriodicRecordList):
             raise Http404
         queryset = super(StudentPeriodicRecordList, self).get_queryset()
         return queryset.filter(student__pk=pk)
+
+class PointLossList(generics.ListAPIView):
+    serializer_class = PointLossSerializer
+    def get_queryset(self):
+        queryset = PeriodicRecord.objects.all()
+        for key in ('occurred_at', 'occurred_at__gte', 'occurred_at__lt',):
+            iso_string = self.request.QUERY_PARAMS.get(key, None)
+            if iso_string:
+                queryset = queryset.filter(**{key: parser.parse(iso_string).date()})
+        return queryset
+
+class PointLossDetail(generics.RetrieveAPIView):
+    queryset = PeriodicRecord.objects.all()
+    serializer_class = PeriodicRecordSerializer
+
+class StudentPointLossList(PointLossList):
+    def get_queryset(self):
+        pk = self.kwargs.get('pk')
+        if pk is None:
+            raise Http404
+        queryset = super(StudentPointLossList, self).get_queryset()
+        return queryset.filter(periodic_record__student__pk=pk)
+
 
 class BehaviorIncidentTypeList(generics.ListAPIView):
     queryset = BehaviorIncidentType.objects.all()
