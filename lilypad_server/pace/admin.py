@@ -1,9 +1,11 @@
-from pace.models import Student, PeriodicRecord, BehaviorIncidentType, BehaviorIncident
-from pace.models import Post, ReplyPost
+from pace.models import Student, PeriodicRecord, PointLoss, \
+                        BehaviorIncidentType, BehaviorIncident, \
+                        Post, ReplyPost
 from django.contrib import admin
 
 admin.site.register(Student)
 admin.site.register(PeriodicRecord)
+admin.site.register(PointLoss)
 admin.site.register(BehaviorIncidentType)
 admin.site.register(BehaviorIncident)
 
