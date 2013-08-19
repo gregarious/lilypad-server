@@ -17,7 +17,7 @@ class StudentSerializer(NamespacedHyperlinkedModelSerializer):
         view_name='pace:student_behaviorincident-list')
     posts_url = serializers.HyperlinkedIdentityField(
         view_name='pace:student_post-list')
-    attendancespans_url = serializers.HyperlinkedIdentityField(
+    attendance_spans_url = serializers.HyperlinkedIdentityField(
         view_name='pace:student_attendancespan-list')
 
     class Meta:
@@ -25,7 +25,7 @@ class StudentSerializer(NamespacedHyperlinkedModelSerializer):
         fields = ('url', 'id', 'first_name', 'last_name',
             'periodic_records_url', 'point_losses_url',
             'behavior_types_url', 'behavior_incidents_url',
-            'posts_url', 'attendancespans_url')
+            'posts_url', 'attendance_spans_url')
 
 # Might be useful for serializing point records into a dict
 #
