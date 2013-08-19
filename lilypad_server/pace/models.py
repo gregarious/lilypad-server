@@ -34,6 +34,18 @@ class PeriodicRecord(models.Model):
         return '<%s_%d:%s>' % (self.date.strftime('%Y-%m-%d'), self.period, self.student)
 
 
+POINT_CATEGORIES = (
+    ('kw', 'Kind Words'),
+    ('cw', 'Complete Work'),
+    ('fd', 'Follow Directions'),
+    ('bs', 'Be Safe'),
+)
+class PointLoss(models.Model):
+    occurred_at = models.DateTimeField(auto_now_add=True)
+    periodic_record = models.ForeignKey(PeriodicRecord)
+    point_type = models.CharField(max_length=4, choices=POINT_CATEGORIES)
+    comment = models.TextField(blank=True)
+
 class BehaviorIncidentType(models.Model):
     code = models.CharField(max_length=6, blank=True)
     label = models.CharField(max_length=100)
