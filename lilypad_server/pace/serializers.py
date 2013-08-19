@@ -9,6 +9,8 @@ from pace.models import Student, PeriodicRecord, PointLoss,     \
 class StudentSerializer(NamespacedHyperlinkedModelSerializer):
     periodic_records_url = serializers.HyperlinkedIdentityField(
         view_name='pace:student_periodicrecord-list')
+    point_losses_url = serializers.HyperlinkedIdentityField(
+        view_name='pace:student_pointloss-list')
     behavior_types_url = serializers.HyperlinkedIdentityField(
         view_name='pace:student_behaviortype-list')
     behavior_incidents_url = serializers.HyperlinkedIdentityField(
@@ -19,8 +21,9 @@ class StudentSerializer(NamespacedHyperlinkedModelSerializer):
     class Meta:
         model = Student
         fields = ('url', 'id', 'first_name', 'last_name',
-            'periodic_records_url', 'behavior_types_url',
-            'behavior_incidents_url', 'posts_url')
+            'periodic_records_url', 'point_losses_url',
+            'behavior_types_url', 'behavior_incidents_url',
+            'posts_url')
 
 # Might be useful for serializing point records into a dict
 #
