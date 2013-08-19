@@ -62,7 +62,7 @@ class PointLossSerializer(NamespacedHyperlinkedModelSerializer):
     periodic_record = stub_serializer_factory(PeriodicRecord)
 
     class Meta:
-        model = PeriodicRecord
+        model = PointLoss
         fields = ('id', 'url', 'occurred_at', 'periodic_record',
             'point_type', 'comment')
 

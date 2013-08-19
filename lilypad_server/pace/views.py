@@ -1,8 +1,8 @@
 from django.db.models import Q
 
-from pace.models import Student, PeriodicRecord
-from pace.models import BehaviorIncidentType, BehaviorIncident
-from pace.models import Post, ReplyPost
+from pace.models import Student, PeriodicRecord, PointLoss,     \
+                        BehaviorIncidentType, BehaviorIncident, \
+                        Post, ReplyPost
 
 from pace.serializers import StudentSerializer, PeriodicRecordSerializer,     \
                              PointLossSerializer, BehaviorIncidentSerializer, \
@@ -34,7 +34,7 @@ class PeriodicRecordList(generics.ListAPIView):
     serializer_class = PeriodicRecordSerializer
     def get_queryset(self):
         queryset = PeriodicRecord.objects.all()
-        for key in ('date', 'date__gte', 'date__lt',):
+        for key in ('date', 'date__gte', 'date__gt', 'date_gte', 'date__lt',):
             iso_string = self.request.QUERY_PARAMS.get(key, None)
             if iso_string:
                 queryset = queryset.filter(**{key: parser.parse(iso_string).date()})
@@ -54,17 +54,20 @@ class StudentPeriodicRecordList(PeriodicRecordList):
 
 class PointLossList(generics.ListAPIView):
     serializer_class = PointLossSerializer
+
+    # TODO: enable POST/PUT functionality that calls PeriodicRecord.declare_point_loss
+
     def get_queryset(self):
-        queryset = PeriodicRecord.objects.all()
-        for key in ('occurred_at', 'occurred_at__gte', 'occurred_at__lt',):
+        queryset = PointLoss.objects.all()
+        for key in ('occurred_at', 'occurred_at__gt', 'occurred_at__gte', 'occurred_at__lt', 'occurred_at__lte'):
             iso_string = self.request.QUERY_PARAMS.get(key, None)
             if iso_string:
-                queryset = queryset.filter(**{key: parser.parse(iso_string).date()})
+                queryset = queryset.filter(**{key: parser.parse(iso_string)})
         return queryset
 
 class PointLossDetail(generics.RetrieveAPIView):
-    queryset = PeriodicRecord.objects.all()
-    serializer_class = PeriodicRecordSerializer
+    queryset = PointLoss.objects.all()
+    serializer_class = PointLossSerializer
 
 class StudentPointLossList(PointLossList):
     def get_queryset(self):
@@ -96,7 +99,7 @@ class BehaviorIncidentList(generics.ListAPIView):
     serializer_class = BehaviorIncidentSerializer
     def get_queryset(self):
         queryset = BehaviorIncident.objects.all()
-        for key in ('started_at__gte', 'started_at__lt',):
+        for key in ('started_at__gt', 'started_at__gte', 'started_at__lte', 'started_at__lt'):
             iso_string = self.request.QUERY_PARAMS.get(key, None)
             if iso_string:
                 queryset = queryset.filter(**{key: parser.parse(iso_string)})
