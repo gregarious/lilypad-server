@@ -148,12 +148,6 @@ class AttendanceSpanList(generics.ListAPIView):
             if iso_string:
                 queryset = queryset.filter(**{key: parser.parse(iso_string).date()})
 
-        for key in ('time_in', 'time_in__gt', 'time_in__gte', 'time_in__lt', 'time_in__lte',
-                    'time_out', 'time_out__gt', 'time_out__gte', 'time_out__lt', 'time_out__lte'):
-            iso_string = self.request.QUERY_PARAMS.get(key, None)
-            if iso_string:
-                queryset = queryset.filter(**{key: parser.parse(iso_string).time()})
-
         return queryset
 
 class AttendanceSpanDetail(generics.RetrieveAPIView):
