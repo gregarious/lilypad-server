@@ -45,8 +45,6 @@ class PeriodicRecordDetail(generics.RetrieveAPIView):
     serializer_class = PeriodicRecordSerializer
 
 class StudentPeriodicRecordList(PeriodicRecordList):
-    serializer_class = PeriodicRecordSerializer
-
     def get_queryset(self):
         pk = self.kwargs.get('pk')
         if pk is None:
@@ -85,16 +83,14 @@ class BehaviorIncidentTypeDetail(generics.RetrieveAPIView):
     queryset = BehaviorIncidentType.objects.all()
     serializer_class = BehaviorIncidentTypeSerializer
 
-class StudentBehaviorIncidentTypeList(generics.ListAPIView):
-    serializer_class = BehaviorIncidentTypeSerializer
-
+class StudentBehaviorIncidentTypeList(BehaviorIncidentTypeList):
     def get_queryset(self):
         pk = self.kwargs.get('pk')
         if pk is None:
             raise Http404
-        records = BehaviorIncidentType.objects.filter(
-            Q(applicable_student__pk=pk) | Q(applicable_student__isnull=True))
-        return records
+        queryset = super(StudentBehaviorIncidentTypeList, self).get_queryset()
+        return queryset.filter(Q(applicable_student__pk=pk) |
+                               Q(applicable_student__isnull=True))
 
 class BehaviorIncidentList(generics.ListAPIView):
     serializer_class = BehaviorIncidentSerializer
@@ -111,8 +107,6 @@ class BehaviorIncidentDetail(generics.RetrieveAPIView):
     serializer_class = BehaviorIncidentSerializer
 
 class StudentBehaviorIncidentList(BehaviorIncidentList):
-    serializer_class = BehaviorIncidentSerializer
-
     def get_queryset(self):
         pk = self.kwargs.get('pk')
         if pk is None:

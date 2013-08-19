@@ -18,6 +18,8 @@ urlpatterns = patterns('',
         views.StudentBehaviorIncidentTypeList.as_view(), name='student_behaviortype-list'),
     url(r'^students/(?P<pk>[0-9]+)/behaviorincidents/$',
         views.StudentBehaviorIncidentList.as_view(), name='student_behaviorincident-list'),
+    url(r'^students/(?P<pk>[0-9]+)/posts/$',
+        views.StudentPostList.as_view(), name='student_post-list'),
 
     url(r'^periodicrecords/$',
         views.PeriodicRecordList.as_view(), name='periodicrecord-list'),
@@ -43,8 +45,6 @@ urlpatterns = patterns('',
         views.PostList.as_view(), name='post-list'),
     url(r'^posts/(?P<pk>[0-9]+)/$',
         views.PostDetail.as_view(), name='post-detail'),
-    url(r'^students/(?P<pk>[0-9]+)/posts/$',
-        views.StudentPostList.as_view(), name='student_post-list'),
 )
 
 urlpatterns = format_suffix_patterns(urlpatterns)
