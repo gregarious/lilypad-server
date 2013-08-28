@@ -35,10 +35,9 @@ class PeriodicRecordList(generics.ListAPIView):
     serializer_class = PeriodicRecordSerializer
     def get_queryset(self):
         queryset = PeriodicRecord.objects.all()
-        for key in ('date', 'date__gte', 'date__gt', 'date_gte', 'date__lt',):
-            iso_string = self.request.QUERY_PARAMS.get(key, None)
-            if iso_string:
-                queryset = queryset.filter(**{key: parser.parse(iso_string).date()})
+        date = self.request.QUERY_PARAMS.get('date', None)
+        if date:
+            queryset = queryset.filter(date=date)
         return queryset
 
 class PeriodicRecordDetail(generics.RetrieveAPIView):
@@ -60,7 +59,7 @@ class PointLossList(generics.ListAPIView):
 
     def get_queryset(self):
         queryset = PointLoss.objects.all()
-        for key in ('occurred_at', 'occurred_at__gt', 'occurred_at__gte', 'occurred_at__lt', 'occurred_at__lte'):
+        for key in ('periodic_record__date__gte', 'periodic_record__date__lt'):
             iso_string = self.request.QUERY_PARAMS.get(key, None)
             if iso_string:
                 queryset = queryset.filter(**{key: parser.parse(iso_string)})
@@ -100,7 +99,7 @@ class BehaviorIncidentList(generics.ListAPIView):
     serializer_class = BehaviorIncidentSerializer
     def get_queryset(self):
         queryset = BehaviorIncident.objects.all()
-        for key in ('started_at__gt', 'started_at__gte', 'started_at__lte', 'started_at__lt'):
+        for key in ('started_at__gte', 'started_at__lt'):
             iso_string = self.request.QUERY_PARAMS.get(key, None)
             if iso_string:
                 queryset = queryset.filter(**{key: parser.parse(iso_string)})
@@ -143,7 +142,7 @@ class AttendanceSpanList(generics.ListAPIView):
 
     def get_queryset(self):
         queryset = AttendanceSpan.objects.all()
-        for key in ('date', 'date__lt', 'date__lte', 'date__gt', 'date__gte'):
+        for key in ('date__gte', 'date__lt'):
             iso_string = self.request.QUERY_PARAMS.get(key, None)
             if iso_string:
                 queryset = queryset.filter(**{key: parser.parse(iso_string).date()})
