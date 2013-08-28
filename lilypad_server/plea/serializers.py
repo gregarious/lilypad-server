@@ -37,7 +37,7 @@ class BehaviorIncidentSerializer(NamespacedHyperlinkedModelSerializer):
 class SubtopicSerializer(NamespacedHyperlinkedModelSerializer):
     class Meta:
         model = Subtopic
-        fields = ('name', 'menu_order')
+        fields = ('id', 'url', 'name', 'menu_order')
 
 class TopicSerializer(NamespacedHyperlinkedModelSerializer):
     subtopics = SubtopicSerializer(many=True)
@@ -45,6 +45,12 @@ class TopicSerializer(NamespacedHyperlinkedModelSerializer):
     class Meta:
         model = Topic
         fields = ('id', 'url', 'name', 'menu_order', 'subtopics')
+
+class SimpleTopicSerializer(NamespacedHyperlinkedModelSerializer):
+    '''Simpler version of basic serializer: omits related subtopics'''
+    class Meta:
+        model = Topic
+        fields = ('id', 'url', 'name', 'menu_order')
 
 class InputChannelSerializer(NamespacedHyperlinkedModelSerializer):
     class Meta:
@@ -57,10 +63,10 @@ class OutputChannelSerializer(NamespacedHyperlinkedModelSerializer):
         fields = ('id', 'url', 'name', 'menu_order')
 
 class ChartSerializer(NamespacedHyperlinkedModelSerializer):
-    topic = stub_serializer_factory(Topic)
-    subtopic = stub_serializer_factory(Subtopic)
-    input_channel = stub_serializer_factory(InputChannel)
-    output_channel = stub_serializer_factory(OutputChannel)
+    topic = SimpleTopicSerializer()
+    subtopic = SubtopicSerializer()
+    input_channel = InputChannelSerializer()
+    output_channel = OutputChannelSerializer()
     student = stub_serializer_factory(Student)
 
     day_metrics_url = serializers.HyperlinkedIdentityField(
