@@ -27,32 +27,6 @@ class StudentSerializer(NamespacedHyperlinkedModelSerializer):
             'behavior_types_url', 'behavior_incidents_url',
             'posts_url', 'attendance_spans_url')
 
-# Might be useful for serializing point records into a dict
-#
-# class PointRecords(object):
-#     def __init__(self, kw, cd, fd, bs):
-#         self.kw = kw
-#         self.cd = cd
-#         self.fd = fd
-#         self.bs = bs
-
-# class PointRecordsField(serializers.WritableField):
-#     def field_from_native(self, data, files, field_name, into):
-#         return PointRecords(
-#             kw=data.get('kw', None),
-#             cd=data.get('cd', None),
-#             fd=data.get('fd', None),
-#             bs=data.get('bs', None)
-#         )
-
-#     def field_to_native(self, obj, field_name):
-#         return {
-#             'kw': obj.kind_words_points,
-#             'cw': obj.complete_work_points,
-#             'fd': obj.follow_directions_points,
-#             'bs': obj.be_safe_points
-#         }
-
 class PeriodicRecordSerializer(NamespacedHyperlinkedModelSerializer):
     student = stub_serializer_factory(Student)
 

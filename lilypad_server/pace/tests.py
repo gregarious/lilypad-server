@@ -14,7 +14,7 @@ from pace.models import Student, Discussion, Note
 from pace.models import GlobalBehaviorPointRecord
 
 # Sigh. Outdated already. xUnit is the worst.
-#
+
 # class ClassroomFixtureMixin(FixtureMixin):
 #     def create_data(self):
 #         self.discussion = Discussion.objects.create(

@@ -23,6 +23,8 @@ def index(request):
         return HttpResponse('Server is configured incorrectly: '
             'no index.html file was found for the Pace app.', status=404)
 
+### Student resource views ###
+
 class StudentList(generics.ListAPIView):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
@@ -31,9 +33,14 @@ class StudentDetail(generics.RetrieveAPIView):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
 
+### PeriodicRecord resource views ###
+
 class PeriodicRecordList(generics.ListAPIView):
     serializer_class = PeriodicRecordSerializer
     def get_queryset(self):
+        '''
+        Allow filtering by date (equality only).
+        '''
         queryset = PeriodicRecord.objects.all()
         date = self.request.QUERY_PARAMS.get('date', None)
         if date:
@@ -45,6 +52,9 @@ class PeriodicRecordDetail(generics.RetrieveAPIView):
     serializer_class = PeriodicRecordSerializer
 
 class StudentPeriodicRecordList(PeriodicRecordList):
+    '''
+    Access all PeriodicRecord for a given student.
+    '''
     def get_queryset(self):
         pk = self.kwargs.get('pk')
         if pk is None:
@@ -52,12 +62,17 @@ class StudentPeriodicRecordList(PeriodicRecordList):
         queryset = super(StudentPeriodicRecordList, self).get_queryset()
         return queryset.filter(student__pk=pk)
 
+### PointLoss resource views ###
+
 class PointLossList(generics.ListAPIView):
     serializer_class = PointLossSerializer
 
     # TODO: enable POST/PUT functionality that calls PeriodicRecord.declare_point_loss
 
     def get_queryset(self):
+        '''
+        Allow filtering by related PeriodicRecord's date field.
+        '''
         queryset = PointLoss.objects.all()
         for key in ('periodic_record__date__gte', 'periodic_record__date__lt'):
             iso_string = self.request.QUERY_PARAMS.get(key, None)
@@ -70,6 +85,9 @@ class PointLossDetail(generics.RetrieveAPIView):
     serializer_class = PointLossSerializer
 
 class StudentPointLossList(PointLossList):
+    '''
+    Access all PointLoss resources for a given student.
+    '''
     def get_queryset(self):
         pk = self.kwargs.get('pk')
         if pk is None:
@@ -77,6 +95,7 @@ class StudentPointLossList(PointLossList):
         queryset = super(StudentPointLossList, self).get_queryset()
         return queryset.filter(periodic_record__student__pk=pk)
 
+### BehaviorIncidentType resource views ###
 
 class BehaviorIncidentTypeList(generics.ListAPIView):
     queryset = BehaviorIncidentType.objects.all()
@@ -87,6 +106,10 @@ class BehaviorIncidentTypeDetail(generics.RetrieveAPIView):
     serializer_class = BehaviorIncidentTypeSerializer
 
 class StudentBehaviorIncidentTypeList(BehaviorIncidentTypeList):
+    '''
+    Access all BehaviorIncidentType resources for a given student. This
+    includes BehaviorIncidentTypes with no particular `applicable_student`.
+    '''
     def get_queryset(self):
         pk = self.kwargs.get('pk')
         if pk is None:
@@ -94,6 +117,8 @@ class StudentBehaviorIncidentTypeList(BehaviorIncidentTypeList):
         queryset = super(StudentBehaviorIncidentTypeList, self).get_queryset()
         return queryset.filter(Q(applicable_student__pk=pk) |
                                Q(applicable_student__isnull=True))
+
+### BehaviorIncident resource views ###
 
 class BehaviorIncidentList(generics.ListAPIView):
     serializer_class = BehaviorIncidentSerializer
@@ -110,12 +135,17 @@ class BehaviorIncidentDetail(generics.RetrieveAPIView):
     serializer_class = BehaviorIncidentSerializer
 
 class StudentBehaviorIncidentList(BehaviorIncidentList):
+    '''
+    Access all BehaviorIncident resources for a given student.
+    '''
     def get_queryset(self):
         pk = self.kwargs.get('pk')
         if pk is None:
             raise Http404
         queryset = super(StudentBehaviorIncidentList, self).get_queryset()
         return queryset.filter(student__pk=pk)
+
+### Post resource views ###
 
 class PostList(generics.ListAPIView):
     queryset = Post.objects.all()
@@ -126,6 +156,9 @@ class PostDetail(generics.RetrieveAPIView):
     serializer_class = PostSerializer
 
 class StudentPostList(generics.ListAPIView):
+    '''
+    Access all Post resources about a given student.
+    '''
     serializer_class = PostSerializer
 
     def get_queryset(self):
@@ -134,6 +167,8 @@ class StudentPostList(generics.ListAPIView):
             raise Http404
         posts = Post.objects.filter(student__pk=pk)
         return posts
+
+### Attendance span views ###
 
 class AttendanceSpanList(generics.ListAPIView):
     serializer_class = AttendanceSpanSerializer
@@ -154,6 +189,9 @@ class AttendanceSpanDetail(generics.RetrieveAPIView):
     serializer_class = AttendanceSpanSerializer
 
 class StudentAttendanceSpanList(AttendanceSpanList):
+    '''
+    Access all AttendanceSpan resources for a given student.
+    '''
     def get_queryset(self):
         pk = self.kwargs.get('pk')
         if pk is None:
