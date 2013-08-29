@@ -25,13 +25,35 @@ def index(request):
 
 ### Student resource views ###
 
-class StudentList(generics.ListAPIView):
+class StudentViewBase():
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
+    def get_serializer(self, instance=None, data=None, files=None, many=False, partial=False):
+        '''
+        Custom serializer to dynamically set the time which the `active_attendance_span`
+        query will be based. See StudentSerializer
+        '''
+        serializer_class = self.get_serializer_class()
+        context = self.get_serializer_context()
 
-class StudentDetail(generics.RetrieveAPIView):
-    queryset = Student.objects.all()
-    serializer_class = StudentSerializer
+        attendance_anchor_dt = None
+        request = context.get('request')
+        if request and request.GET.get('attendance_anchor'):
+            try:
+                attendance_anchor_dt = parser.parse(request.GET.get('attendance_anchor'))
+            except ValueError:
+                pass
+
+        return serializer_class(instance, attendance_anchor_dt=attendance_anchor_dt,
+                                data=data, files=files, many=many,
+                                partial=partial, context=context)
+
+
+class StudentList(StudentViewBase, generics.ListAPIView):
+    pass
+
+class StudentDetail(StudentViewBase, generics.RetrieveAPIView):
+    pass
 
 ### PeriodicRecord resource views ###
 
