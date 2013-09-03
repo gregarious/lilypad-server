@@ -86,7 +86,7 @@ POINT_CATEGORIES = (
     (POINT_CATEGORIES_BS, 'Be Safe'),
 )
 class PointLoss(models.Model):
-    occurred_at = models.DateTimeField(auto_now_add=True)
+    occurred_at = models.DateTimeField()
     periodic_record = models.ForeignKey(PeriodicRecord)
     point_type = models.CharField(max_length=4, choices=POINT_CATEGORIES)
     comment = models.TextField(blank=True)
