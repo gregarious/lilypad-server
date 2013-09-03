@@ -48,7 +48,7 @@ A Django-based HTTP server hosting the Lilypad API.
 
         $ python manage.py runserver
 
-8. Test the server by visiting a valid URL (e.g. http://127.0.0.1:8000/pace/students/)
+8. Test the server by visiting a valid URL (e.g. http://127.0.0.1:8000/pace/students/). The full API is browsable in a very human-friendly way thanks to the `djangorestframework` we're using.
 
 ## Serving the client app (for dev machines)
 
@@ -64,6 +64,8 @@ all your lilypad code:
 > 1. Ensure `CLIENT_APP_PARENT` is set to `/home/john/lilypad` (see "Server Installation", step 4)
 > 2. Clone the `lilypad-pace` repository into `/home/john/lilypad`
 > 3. Profit!
+
+Once it's set up (and the dev server is running locally), you'll be able to access the app from [http://127.0.0.1:8000/pace/](http://127.0.0.1:8000/pace/) or [http://127.0.0.1:8000/plea/](http://127.0.0.1:8000/plea/).
 
 ## Production Install Notes
 
