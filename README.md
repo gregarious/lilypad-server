@@ -4,9 +4,9 @@ A Django-based HTTP server hosting the Lilypad API.
 
 ## Server Installation (for dev machines)
 
-1.  Install `virtualenv` and `virtualenvwrapper` using [these instructions](http://docs.python-guide.org/en/latest/dev/virtualenvs.html)
-    - If you don't have `pip` installed, [check out this guide](http://docs.python-guide.org/en/latest/#getting-started)
-      for a full how-to on a good way to set up a local Python installation.
+1.  Install `virtualenv` (installation docs: [Mac](http://docs.python-guide.org/en/latest/starting/install/osx/#virtualenv) / [Windows](http://docs.python-guide.org/en/latest/starting/install/win/#virtualenv)) and `virtualenvwrapper` ([installation docs](http://virtualenvwrapper.readthedocs.org/en/latest/install.html)).
+    - If you don't have `pip` installed, [see the full guide](http://docs.python-guide.org/en/latest/#getting-started)
+      for a great how-to on the best way to set up a local Python installation.
 
 2. Create a new virtual environment for Lilypad:
 
@@ -40,11 +40,11 @@ A Django-based HTTP server hosting the Lilypad API.
         $ python manage.py syncdb
         $ python manage.py migrate
 
-6 (Optional) Load a data fixture
+6. (Optional) Load a data fixture
 
         $ python manage.py loaddata <fixture_file>
 
-7. Launch the server:
+7. Launch the server
 
         $ python manage.py runserver
 
