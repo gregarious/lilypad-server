@@ -2,7 +2,7 @@
 
 A Django-based HTTP server hosting the Lilypad API.
 
-## Installation (for dev machines)
+## Server Installation (for dev machines)
 
 1.  Install `virtualenv` and `virtualenvwrapper` using [these instructions](http://docs.python-guide.org/en/latest/dev/virtualenvs.html)
     - If you don't have `pip` installed, [check out this guide](http://docs.python-guide.org/en/latest/#getting-started)
@@ -33,17 +33,37 @@ A Django-based HTTP server hosting the Lilypad API.
         unset DATABASE_URL
         unset CLIENT_APP_PARENT
 
-    _(As an example for_ `CLIENT_APP_PARENT`, _if the `lilypad-pace` repository is cloned at `/home/john/lilypad/lilypad-pace`, the setting would be `/home/john/lilypad`.)_
+    _(As an example for_ `CLIENT_APP_PARENT`, _if the `lilypad-pace` repository is cloned at `/home/john/lilypad/lilypad-pace`, the setting would be `/home/john/lilypad`. See "Serving the client app" below for more details.)_
 
 5. Initialize the database
 
         $ python manage.py syncdb
         $ python manage.py migrate
 
-6. Launch the server:
+6 (Optional) Load a data fixture
+
+        $ python manage.py loaddata <fixture_file>
+
+7. Launch the server:
 
         $ python manage.py runserver
 
+8. Test the server by visiting a valid URL (e.g. http://127.0.0.1:8000/pace/students/)
+
+## Serving the client app (for dev machines)
+
+To avoid cross-site scripting problems, it's easiest to have the Django dev server serve the client apps.
+
+However, since the client apps are in separate repositories, some care must be taken to set up the
+environment. The dev server looks in the directory set in the `CLIENT_APP_PARENT` repository for the
+cloned client repositories.
+
+For example, to set up the Pace app, assuming you have a directory called `/home/john/lilypad` to house
+all your lilypad code:
+
+> 1. Ensure `CLIENT_APP_PARENT` is set to `/home/john/lilypad` (see "Server Installation", step 4)
+> 2. Clone the `lilypad-pace` repository into `/home/john/lilypad`
+> 3. Profit!
 
 ## Production Install Notes
 
