@@ -85,7 +85,6 @@ class StudentSerializer(NamespacedHyperlinkedModelSerializer):
             date = self.attendance_anchor_dt.date()
             time = self.attendance_anchor_dt.time()
 
-            print date, time
             spans = AttendanceSpan.objects.filter(
                 student=obj,
                 date=date,
