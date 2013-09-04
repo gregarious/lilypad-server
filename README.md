@@ -27,6 +27,9 @@ A Django-based HTTP server hosting the Lilypad API.
         export DATABASE_URL='postgres://localhost/lilypad_development'
         export CLIENT_APP_PARENT='/path/to/client/repos/parent'
 
+        # this should be the `lilypad_server` folder in the root of the repository
+        add2virtualenv '/path/to/lilypad-server/lilypad_server'
+
     And this to `.virtualenvs/lilypad/bin/predeactivate`:
 
         unset DJANGO_SETTINGS_MODULE
@@ -49,6 +52,14 @@ A Django-based HTTP server hosting the Lilypad API.
         $ python manage.py runserver
 
 8. Test the server by visiting a valid URL (e.g. http://127.0.0.1:8000/pace/students/). The full API is browsable in a very human-friendly way thanks to the `djangorestframework` we're using.
+
+From now on, for every new shell session, you'll need to activate the virtualenv with the following command:
+
+    $ workon lilypad
+
+And if you want to deactivate the virtualenv, simply run:
+
+    $ deactivate
 
 ## Serving the client app (for dev machines)
 
