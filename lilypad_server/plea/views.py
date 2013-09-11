@@ -14,7 +14,7 @@ from django.contrib.staticfiles.views import serve
 
 def index(request):
     try:
-        return serve(request, 'lilypad-plea/index.html')
+        return serve(request, 'lilypad-plea/app/index.html')
     except Http404:
         return HttpResponse('Server is configured incorrectly: '
             'no index.html file was found for the PLEA app.', status=404)
