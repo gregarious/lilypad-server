@@ -1,0 +1,606 @@
+[
+{
+  "pk": 1, 
+  "model": "plea.student", 
+  "fields": {
+    "date_of_birth": "2006-09-19", 
+    "first_name": "Lisa", 
+    "last_name": "Simpson"
+  }
+},
+{
+  "pk": 2, 
+  "model": "plea.student", 
+  "fields": {
+    "date_of_birth": "2006-03-26", 
+    "first_name": "Milhouse", 
+    "last_name": "Van Houten"
+  }
+},
+{
+  "pk": 3, 
+  "model": "plea.student", 
+  "fields": {
+    "date_of_birth": "2007-02-19", 
+    "first_name": "Nelson", 
+    "last_name": "Muntz"
+  }
+},
+{
+  "pk": 1, 
+  "model": "plea.behaviorincidenttype", 
+  "fields": {
+    "active": true, 
+    "code": "A", 
+    "student": 1, 
+    "label": "General Aggression"
+  }
+},
+{
+  "pk": 2, 
+  "model": "plea.behaviorincidenttype", 
+  "fields": {
+    "active": true, 
+    "code": "L", 
+    "student": 1, 
+    "label": "Language"
+  }
+},
+{
+  "pk": 3, 
+  "model": "plea.behaviorincidenttype", 
+  "fields": {
+    "active": true, 
+    "code": "S", 
+    "student": 1, 
+    "label": "Spitting"
+  }
+},
+{
+  "pk": 4, 
+  "model": "plea.behaviorincidenttype", 
+  "fields": {
+    "active": true, 
+    "code": "P", 
+    "student": 2, 
+    "label": "Pinch"
+  }
+},
+{
+  "pk": 5, 
+  "model": "plea.behaviorincidenttype", 
+  "fields": {
+    "active": true, 
+    "code": "I", 
+    "student": 2, 
+    "label": "Inappropriate Touch"
+  }
+},
+{
+  "pk": 6, 
+  "model": "plea.behaviorincidenttype", 
+  "fields": {
+    "active": true, 
+    "code": "HS", 
+    "student": 3, 
+    "label": "Happy Slap"
+  }
+},
+{
+  "pk": 7, 
+  "model": "plea.behaviorincidenttype", 
+  "fields": {
+    "active": true, 
+    "code": "L", 
+    "student": 3, 
+    "label": "Laughing"
+  }
+},
+{
+  "pk": 1, 
+  "model": "plea.behaviorincident", 
+  "fields": {
+    "comment": "", 
+    "occurred_at": "2013-09-03T15:34:45Z", 
+    "type": 1, 
+    "student": 1
+  }
+},
+{
+  "pk": 2, 
+  "model": "plea.behaviorincident", 
+  "fields": {
+    "comment": "", 
+    "occurred_at": "2013-09-03T15:23:00Z", 
+    "type": 1, 
+    "student": 1
+  }
+},
+{
+  "pk": 3, 
+  "model": "plea.behaviorincident", 
+  "fields": {
+    "comment": "", 
+    "occurred_at": "2013-09-03T15:41:00Z", 
+    "type": 1, 
+    "student": 1
+  }
+},
+{
+  "pk": 4, 
+  "model": "plea.behaviorincident", 
+  "fields": {
+    "comment": "punched Milhouse", 
+    "occurred_at": "2013-09-03T17:02:00Z", 
+    "type": 1, 
+    "student": 1
+  }
+},
+{
+  "pk": 5, 
+  "model": "plea.behaviorincident", 
+  "fields": {
+    "comment": "", 
+    "occurred_at": "2013-09-04T14:24:00Z", 
+    "type": 1, 
+    "student": 1
+  }
+},
+{
+  "pk": 6, 
+  "model": "plea.behaviorincident", 
+  "fields": {
+    "comment": "", 
+    "occurred_at": "2013-09-05T12:44:00Z", 
+    "type": 1, 
+    "student": 1
+  }
+},
+{
+  "pk": 7, 
+  "model": "plea.behaviorincident", 
+  "fields": {
+    "comment": "", 
+    "occurred_at": "2013-09-04T16:56:00Z", 
+    "type": 2, 
+    "student": 1
+  }
+},
+{
+  "pk": 8, 
+  "model": "plea.behaviorincident", 
+  "fields": {
+    "comment": "", 
+    "occurred_at": "2013-09-05T12:56:00Z", 
+    "type": 2, 
+    "student": 1
+  }
+},
+{
+  "pk": 9, 
+  "model": "plea.behaviorincident", 
+  "fields": {
+    "comment": "", 
+    "occurred_at": "2013-09-04T13:32:00Z", 
+    "type": 3, 
+    "student": 1
+  }
+},
+{
+  "pk": 10, 
+  "model": "plea.behaviorincident", 
+  "fields": {
+    "comment": "", 
+    "occurred_at": "2013-09-04T13:37:00Z", 
+    "type": 3, 
+    "student": 1
+  }
+},
+{
+  "pk": 11, 
+  "model": "plea.behaviorincident", 
+  "fields": {
+    "comment": "", 
+    "occurred_at": "2013-09-04T14:02:00Z", 
+    "type": 3, 
+    "student": 1
+  }
+},
+{
+  "pk": 1, 
+  "model": "plea.topic", 
+  "fields": {
+    "menu_order": 0, 
+    "name": "Imitation"
+  }
+},
+{
+  "pk": 2, 
+  "model": "plea.topic", 
+  "fields": {
+    "menu_order": 1, 
+    "name": "Language"
+  }
+},
+{
+  "pk": 3, 
+  "model": "plea.topic", 
+  "fields": {
+    "menu_order": 2, 
+    "name": "Reading"
+  }
+},
+{
+  "pk": 4, 
+  "model": "plea.topic", 
+  "fields": {
+    "menu_order": 3, 
+    "name": "Math"
+  }
+},
+{
+  "pk": 5, 
+  "model": "plea.topic", 
+  "fields": {
+    "menu_order": 5, 
+    "name": "Wellness"
+  }
+},
+{
+  "pk": 1, 
+  "model": "plea.subtopic", 
+  "fields": {
+    "topic": 2, 
+    "menu_order": 0, 
+    "name": "Letters"
+  }
+},
+{
+  "pk": 2, 
+  "model": "plea.subtopic", 
+  "fields": {
+    "topic": 2, 
+    "menu_order": 1, 
+    "name": "Phonemes"
+  }
+},
+{
+  "pk": 3, 
+  "model": "plea.subtopic", 
+  "fields": {
+    "topic": 2, 
+    "menu_order": 2, 
+    "name": "CV Blends"
+  }
+},
+{
+  "pk": 4, 
+  "model": "plea.subtopic", 
+  "fields": {
+    "topic": 2, 
+    "menu_order": 3, 
+    "name": "1-5 Syllable Words"
+  }
+},
+{
+  "pk": 5, 
+  "model": "plea.subtopic", 
+  "fields": {
+    "topic": 2, 
+    "menu_order": 4, 
+    "name": "Safety Words"
+  }
+},
+{
+  "pk": 6, 
+  "model": "plea.subtopic", 
+  "fields": {
+    "topic": 2, 
+    "menu_order": 5, 
+    "name": "Categories"
+  }
+},
+{
+  "pk": 7, 
+  "model": "plea.subtopic", 
+  "fields": {
+    "topic": 1, 
+    "menu_order": 0, 
+    "name": "Facial Expressions"
+  }
+},
+{
+  "pk": 8, 
+  "model": "plea.subtopic", 
+  "fields": {
+    "topic": 5, 
+    "menu_order": 0, 
+    "name": "Coordination"
+  }
+},
+{
+  "pk": 1, 
+  "model": "plea.inputchannel", 
+  "fields": {
+    "menu_order": 0, 
+    "name": "See"
+  }
+},
+{
+  "pk": 2, 
+  "model": "plea.inputchannel", 
+  "fields": {
+    "menu_order": 1, 
+    "name": "Hear"
+  }
+},
+{
+  "pk": 3, 
+  "model": "plea.inputchannel", 
+  "fields": {
+    "menu_order": 2, 
+    "name": "Free"
+  }
+},
+{
+  "pk": 1, 
+  "model": "plea.outputchannel", 
+  "fields": {
+    "menu_order": 0, 
+    "name": "Say"
+  }
+},
+{
+  "pk": 2, 
+  "model": "plea.outputchannel", 
+  "fields": {
+    "menu_order": 1, 
+    "name": "Point"
+  }
+},
+{
+  "pk": 3, 
+  "model": "plea.outputchannel", 
+  "fields": {
+    "menu_order": 2, 
+    "name": "Mark"
+  }
+},
+{
+  "pk": 1, 
+  "model": "plea.chart", 
+  "fields": {
+    "output_channel": 3, 
+    "last_opened_at": "2013-09-04T13:36:44Z", 
+    "created_at": "2013-09-11T19:36:52.985Z", 
+    "label": "", 
+    "topic": 1, 
+    "student": 1, 
+    "subtopic": 7, 
+    "input_channel": 1
+  }
+},
+{
+  "pk": 2, 
+  "model": "plea.chart", 
+  "fields": {
+    "output_channel": 2, 
+    "last_opened_at": "2013-09-05T13:36:44Z", 
+    "created_at": "2013-09-11T19:38:27.659Z", 
+    "label": "", 
+    "topic": 2, 
+    "student": 1, 
+    "subtopic": 4, 
+    "input_channel": 3
+  }
+},
+{
+  "pk": 2, 
+  "model": "plea.daymetric", 
+  "fields": {
+    "date": "2013-09-03", 
+    "type": 0, 
+    "chart": 2, 
+    "value": 5
+  }
+},
+{
+  "pk": 3, 
+  "model": "plea.daymetric", 
+  "fields": {
+    "date": "2013-09-03", 
+    "type": 1, 
+    "chart": 2, 
+    "value": 45
+  }
+},
+{
+  "pk": 4, 
+  "model": "plea.daymetric", 
+  "fields": {
+    "date": "2013-09-03", 
+    "type": 2, 
+    "chart": 2, 
+    "value": 5
+  }
+},
+{
+  "pk": 5, 
+  "model": "plea.daymetric", 
+  "fields": {
+    "date": "2013-09-03", 
+    "type": 3, 
+    "chart": 2, 
+    "value": 1
+  }
+},
+{
+  "pk": 6, 
+  "model": "plea.daymetric", 
+  "fields": {
+    "date": "2013-09-04", 
+    "type": 0, 
+    "chart": 2, 
+    "value": 5
+  }
+},
+{
+  "pk": 7, 
+  "model": "plea.daymetric", 
+  "fields": {
+    "date": "2013-09-04", 
+    "type": 1, 
+    "chart": 2, 
+    "value": 50
+  }
+},
+{
+  "pk": 8, 
+  "model": "plea.daymetric", 
+  "fields": {
+    "date": "2013-09-04", 
+    "type": 2, 
+    "chart": 2, 
+    "value": 0
+  }
+},
+{
+  "pk": 9, 
+  "model": "plea.daymetric", 
+  "fields": {
+    "date": "2013-09-04", 
+    "type": 3, 
+    "chart": 2, 
+    "value": 1
+  }
+},
+{
+  "pk": 10, 
+  "model": "plea.daymetric", 
+  "fields": {
+    "date": "2013-09-05", 
+    "type": 0, 
+    "chart": 2, 
+    "value": 3
+  }
+},
+{
+  "pk": 11, 
+  "model": "plea.daymetric", 
+  "fields": {
+    "date": "2013-09-05", 
+    "type": 1, 
+    "chart": 2, 
+    "value": 50
+  }
+},
+{
+  "pk": 12, 
+  "model": "plea.daymetric", 
+  "fields": {
+    "date": "2013-09-05", 
+    "type": 2, 
+    "chart": 2, 
+    "value": 2
+  }
+},
+{
+  "pk": 13, 
+  "model": "plea.daymetric", 
+  "fields": {
+    "date": "2013-09-05", 
+    "type": 3, 
+    "chart": 2, 
+    "value": 1
+  }
+},
+{
+  "pk": 14, 
+  "model": "plea.daymetric", 
+  "fields": {
+    "date": "2013-09-03", 
+    "type": 0, 
+    "chart": 1, 
+    "value": 3
+  }
+},
+{
+  "pk": 15, 
+  "model": "plea.daymetric", 
+  "fields": {
+    "date": "2013-09-03", 
+    "type": 1, 
+    "chart": 1, 
+    "value": 20
+  }
+},
+{
+  "pk": 16, 
+  "model": "plea.daymetric", 
+  "fields": {
+    "date": "2013-09-03", 
+    "type": 2, 
+    "chart": 1, 
+    "value": 0
+  }
+},
+{
+  "pk": 17, 
+  "model": "plea.daymetric", 
+  "fields": {
+    "date": "2013-09-03", 
+    "type": 3, 
+    "chart": 1, 
+    "value": 2
+  }
+},
+{
+  "pk": 19, 
+  "model": "plea.daymetric", 
+  "fields": {
+    "date": "2013-09-04", 
+    "type": 3, 
+    "chart": 1, 
+    "value": 1
+  }
+},
+{
+  "pk": 20, 
+  "model": "plea.daymetric", 
+  "fields": {
+    "date": "2013-09-04", 
+    "type": 0, 
+    "chart": 1, 
+    "value": 3
+  }
+},
+{
+  "pk": 21, 
+  "model": "plea.daymetric", 
+  "fields": {
+    "date": "2013-09-04", 
+    "type": 1, 
+    "chart": 1, 
+    "value": 25
+  }
+},
+{
+  "pk": 22, 
+  "model": "plea.daymetric", 
+  "fields": {
+    "date": "2013-09-04", 
+    "type": 2, 
+    "chart": 1, 
+    "value": 2
+  }
+},
+{
+  "pk": 1, 
+  "model": "plea.phaseline", 
+  "fields": {
+    "date": "2013-09-05", 
+    "chart": 2, 
+    "title": "drop floor"
+  }
+}
+]
