@@ -18,13 +18,13 @@ A Django-based HTTP server hosting the Lilypad API.
 
 4. Three environment variables need to be set:
     1. `DJANGO_SETTINGS_MODULE`: tells any Django process which settings file to use.
-    2. `DATABASE_URL`: declares the local DB configuration. You'll need to set up the backend on your own.
+    2. `DATABASE_URL`: declares the local DB configuration. You'll need to set up the backend on your own. The simplest option is using SQLite.
     3. `CLIENT_APP_PARENT`: the directory that houses various client-side app repositories. See the note below.
 
     The recommended way to do this (for development installations, at least) is to add this variable to your virtualenv. To do so, add the following lines to your `.virtualenvs/lilypad/bin/postactivate`, adjusting anything for your environment:
 
         export DJANGO_SETTINGS_MODULE='lilypad_server.settings.development'
-        export DATABASE_URL='postgres://localhost/lilypad_development'
+        export DATABASE_URL='sqlite:////path/to/some/file'
         export CLIENT_APP_PARENT='/path/to/client/repos/parent'
 
         # this should be the `lilypad_server` folder in the root of the repository
