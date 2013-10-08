@@ -1,9 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+class StaffProfile(models.Model):
+    user = models.OneToOneField(User)
+    classrooms = models.ManyToManyField('Classroom')
+
 class Classroom(models.Model):
     name = models.CharField(max_length=200)
-    staff = models.ManyToManyField(User, null=True, blank=True)
+    def __unicode__(self):
+        return self.name
 
 class Student(models.Model):
     first_name = models.CharField(max_length=100)
