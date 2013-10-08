@@ -131,11 +131,18 @@ INSTALLED_APPS = (
     'south',
     'django_extensions',
     'rest_framework',
+    'rest_framework.authtoken',
 
     # our apps
     'pace',
     'plea',
 )
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    )
+}
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

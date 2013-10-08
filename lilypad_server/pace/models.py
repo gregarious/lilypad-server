@@ -15,7 +15,7 @@ class Student(models.Model):
     last_name = models.CharField(max_length=100,
         help_text="(or partial last name)")
 
-    classroom = models.ForeignKey(Classroom, null=True, blank=True)
+    classroom = models.ForeignKey(Classroom, null=True, blank=True, related_name='students')
 
     def __unicode__(self):
         return u'%s %s' % (self.first_name, self.last_name)
@@ -153,3 +153,14 @@ class AttendanceSpan(models.Model):
 
     def __unicode__(self):
         return "%s: %s" % (self.student, self.date.strftime('%Y-%m-%d'))
+
+# Token generation hook
+
+from django.dispatch import receiver
+from django.db.models.signals import post_save
+from rest_framework.authtoken.models import Token
+
+@receiver(post_save, sender=User)
+def create_auth_token(sender, instance=None, created=False, **kwargs):
+    if created:
+        Token.objects.create(user=instance)
