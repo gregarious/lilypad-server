@@ -5,6 +5,11 @@ from rest_framework.urlpatterns import format_suffix_patterns
 import views
 
 urlpatterns = patterns('',
+    url(r'^classrooms/$',
+        views.ClassroomList.as_view(), name='classroom-list'),
+    url(r'^classrooms/(?P<pk>[0-9]+)/$',
+        views.ClassroomDetail.as_view(), name='classroom-detail'),
+
     url(r'^students/$',
         views.StudentList.as_view(), name='student-list'),
     url(r'^students/(?P<pk>[0-9]+)/$',

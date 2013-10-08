@@ -2,7 +2,8 @@ from rest_framework import serializers
 from common.serializers import NamespacedHyperlinkedModelSerializer, stub_serializer_factory
 
 from django.contrib.auth.models import User
-from pace.models import Student, PeriodicRecord, PointLoss,     \
+from pace.models import Classroom, Student,             \
+                        PeriodicRecord, PointLoss,      \
                         BehaviorIncidentType, BehaviorIncident, \
                         Post, ReplyPost, AttendanceSpan
 
@@ -95,6 +96,12 @@ class StudentSerializer(NamespacedHyperlinkedModelSerializer):
                 return spans[0]
 
         return None
+
+class ClassroomSerializer(NamespacedHyperlinkedModelSerializer):
+    students = StudentSerializer(many=True)
+    class Meta:
+        model = Classroom
+
 
 class PeriodicRecordSerializer(NamespacedHyperlinkedModelSerializer):
     student = stub_serializer_factory(Student)

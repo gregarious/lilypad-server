@@ -1,10 +1,10 @@
 from django.db.models import Q
 
-from pace.models import Student, PeriodicRecord, PointLoss,     \
+from pace.models import Classroom, Student, PeriodicRecord, PointLoss,     \
                         BehaviorIncidentType, BehaviorIncident, \
                         Post, ReplyPost, AttendanceSpan
 
-from pace.serializers import StudentSerializer, PeriodicRecordSerializer,     \
+from pace.serializers import ClassroomSerializer, StudentSerializer, PeriodicRecordSerializer,     \
                              PointLossSerializer, BehaviorIncidentSerializer, \
                              BehaviorIncidentTypeSerializer, PostSerializer,  \
                              AttendanceSpanSerializer
@@ -23,6 +23,25 @@ def index(request):
         return HttpResponse('Server is configured incorrectly: '
             'no index.html file was found for the Pace app.', status=404)
 
+### Classroom resource views ###
+
+class ClassroomViewBase():
+    serializer_class = ClassroomSerializer
+    def get_queryset(self):
+        '''
+        Ensure user only gets info for classrooms they have access to
+        '''
+        if self.request.user.is_authenticated():
+            return Classroom.objects.filter(staffprofile__user=self.request.user)
+        else:
+            return Classroom.objects.none()
+
+class ClassroomList(ClassroomViewBase, generics.ListAPIView):
+    pass
+
+class ClassroomDetail(ClassroomViewBase, generics.RetrieveAPIView):
+    pass
+
 ### Student resource views ###
 
 class StudentViewBase():
@@ -33,6 +52,8 @@ class StudentViewBase():
         Custom serializer to dynamically set the time which the `active_attendance_span`
         query will be based. See StudentSerializer
         '''
+
+        print 'sup', unicode(self.request.user)
         serializer_class = self.get_serializer_class()
         context = self.get_serializer_context()
 
