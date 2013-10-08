@@ -52,8 +52,6 @@ class StudentViewBase():
         Custom serializer to dynamically set the time which the `active_attendance_span`
         query will be based. See StudentSerializer
         '''
-
-        print 'sup', unicode(self.request.user)
         serializer_class = self.get_serializer_class()
         context = self.get_serializer_context()
 
