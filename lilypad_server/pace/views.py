@@ -74,6 +74,18 @@ class StudentList(StudentViewBase, generics.ListAPIView):
 class StudentDetail(StudentViewBase, generics.RetrieveAPIView):
     pass
 
+class ClassroomStudentList(StudentList):
+    '''
+    Access all Students for a given Classroom.
+    '''
+    def get_queryset(self):
+        pk = self.kwargs.get('pk')
+        if pk is None:
+            raise Http404
+        queryset = super(ClassroomStudentList, self).get_queryset()
+        return queryset.filter(classroom__pk=pk)
+
+
 ### PeriodicRecord resource views ###
 
 class PeriodicRecordList(generics.ListAPIView):

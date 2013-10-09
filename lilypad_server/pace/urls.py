@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import patterns, url
 from django.conf import settings
 from rest_framework.urlpatterns import format_suffix_patterns
 
@@ -9,6 +9,8 @@ urlpatterns = patterns('',
         views.ClassroomList.as_view(), name='classroom-list'),
     url(r'^classrooms/(?P<pk>[0-9]+)/$',
         views.ClassroomDetail.as_view(), name='classroom-detail'),
+    url(r'^classrooms/(?P<pk>[0-9]+)/students/$',
+        views.ClassroomStudentList.as_view(), name='classroom_student-list'),
 
     url(r'^students/$',
         views.StudentList.as_view(), name='student-list'),

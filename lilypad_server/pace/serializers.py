@@ -7,6 +7,11 @@ from pace.models import Classroom, Student,             \
                         BehaviorIncidentType, BehaviorIncident, \
                         Post, ReplyPost, AttendanceSpan
 
+class ClassroomSerializer(NamespacedHyperlinkedModelSerializer):
+    class Meta:
+        model = Classroom
+        fields = ('id', 'url', 'name',)
+
 class AttendanceSpanSerializer(NamespacedHyperlinkedModelSerializer):
     student = stub_serializer_factory(Student)
 
@@ -96,11 +101,6 @@ class StudentSerializer(NamespacedHyperlinkedModelSerializer):
                 return spans[0]
 
         return None
-
-class ClassroomSerializer(NamespacedHyperlinkedModelSerializer):
-    students = StudentSerializer(many=True)
-    class Meta:
-        model = Classroom
 
 
 class PeriodicRecordSerializer(NamespacedHyperlinkedModelSerializer):
