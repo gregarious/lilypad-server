@@ -162,5 +162,6 @@ from rest_framework.authtoken.models import Token
 
 @receiver(post_save, sender=User)
 def create_auth_token(sender, instance=None, created=False, **kwargs):
-    if created:
+    # don't auto assign token if user is being set from a fixture
+    if created and not kwargs.get('raw', False):
         Token.objects.create(user=instance)
