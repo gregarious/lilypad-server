@@ -7,7 +7,7 @@ class NamespacedHyperlinkedModelSerializer(serializers.HyperlinkedModelSerialize
     '''
     _default_view_name = '%(app_label)s:%(model_name)s-detail'
 
-def stub_serializer_factory(model_class):
+def stub_serializer_factory(model_class, *args, **kwargs):
     '''
     Returns a NamespacedHyperlinkedModelSerializer for the given model
     class that exposes the resource's `id` and `url` only.
@@ -22,4 +22,4 @@ def stub_serializer_factory(model_class):
         {'Meta': meta_class}
     )
 
-    return stub_class()
+    return stub_class(*args, **kwargs)

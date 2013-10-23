@@ -92,7 +92,7 @@ POINT_CATEGORIES = (
 )
 class PointLoss(models.Model):
     occurred_at = models.DateTimeField()
-    periodic_record = models.ForeignKey(PeriodicRecord)
+    periodic_record = models.ForeignKey(PeriodicRecord, related_name="point_losses")
     point_type = models.CharField(max_length=4, choices=POINT_CATEGORIES)
     comment = models.TextField(blank=True)
 

@@ -102,17 +102,6 @@ class StudentSerializer(NamespacedHyperlinkedModelSerializer):
 
         return None
 
-
-class PeriodicRecordSerializer(NamespacedHyperlinkedModelSerializer):
-    student = stub_serializer_factory(Student)
-
-    class Meta:
-        model = PeriodicRecord
-        fields = ('id', 'url', 'last_changed_at', 'period', 'date',
-            'student', 'is_eligible', 'kind_words_points',
-            'complete_work_points', 'follow_directions_points',
-            'be_safe_points')
-
 class PointLossSerializer(NamespacedHyperlinkedModelSerializer):
     periodic_record = stub_serializer_factory(PeriodicRecord)
 
@@ -120,6 +109,17 @@ class PointLossSerializer(NamespacedHyperlinkedModelSerializer):
         model = PointLoss
         fields = ('id', 'url', 'occurred_at', 'periodic_record',
             'point_type', 'comment')
+
+class PeriodicRecordSerializer(NamespacedHyperlinkedModelSerializer):
+    student = stub_serializer_factory(Student)
+    point_losses = PointLossSerializer(many=True)
+
+    class Meta:
+        model = PeriodicRecord
+        fields = ('id', 'url', 'last_changed_at', 'period', 'date',
+            'student', 'is_eligible', 'kind_words_points',
+            'complete_work_points', 'follow_directions_points',
+            'be_safe_points', 'point_losses')
 
 class BehaviorIncidentTypeSerializer(NamespacedHyperlinkedModelSerializer):
     applicable_student = stub_serializer_factory(Student)
