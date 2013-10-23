@@ -11,6 +11,8 @@ urlpatterns = patterns('',
     url(r'^$', 'lilypad_server.views.home'),
     url(r'^admin/', include(admin.site.urls)),
 
+    url(r'^authtoken/', 'rest_framework.authtoken.views.obtain_auth_token'),
+
     url(r'^pace/', include(pace_urls, namespace='pace')),
     url(r'^plea/', include(plea_urls, namespace='plea'))
 )
