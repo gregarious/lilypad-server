@@ -50,7 +50,7 @@ class StudentViewBase():
     def get_serializer(self, instance=None, data=None, files=None, many=False, partial=False):
         '''
         Custom serializer to dynamically set the time which the `active_attendance_span`
-        query will be based. See StudentSerializer
+        query will be based. See StudentSerializer.
         '''
         serializer_class = self.get_serializer_class()
         context = self.get_serializer_context()
@@ -117,10 +117,12 @@ class StudentPeriodicRecordList(PeriodicRecordList):
 
 ### PointLoss resource views ###
 
-class PointLossList(generics.ListAPIView):
+class PointLossList(generics.ListCreateAPIView):
+    '''
+    Note that a side effect of a POST call here is the decrementing 
+    of the related PeriodicRecord point for the corresponding type.
+    '''
     serializer_class = PointLossSerializer
-
-    # TODO: enable POST/PUT functionality that calls PeriodicRecord.declare_point_loss
 
     def get_queryset(self):
         '''
@@ -133,7 +135,11 @@ class PointLossList(generics.ListAPIView):
                 queryset = queryset.filter(**{key: parser.parse(iso_string)})
         return queryset
 
-class PointLossDetail(generics.RetrieveAPIView):
+class PointLossDetail(generics.RetrieveDestroyAPIView):
+    '''
+    Note that a side effect of a DELETE call here is the incrementing 
+    of the related PeriodicRecord point for the corresponding type.
+    '''
     queryset = PointLoss.objects.all()
     serializer_class = PointLossSerializer
 
