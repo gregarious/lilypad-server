@@ -156,7 +156,7 @@ class StudentPointLossList(PointLossList):
 
 ### BehaviorIncidentType resource views ###
 
-class BehaviorIncidentTypeList(generics.ListAPIView):
+class BehaviorIncidentTypeList(generics.ListCreateAPIView):
     queryset = BehaviorIncidentType.objects.all()
     serializer_class = BehaviorIncidentTypeSerializer
 

@@ -121,7 +121,7 @@ class PeriodicRecordSerializer(NamespacedHyperlinkedModelSerializer):
             'be_safe_points', 'point_losses')
 
 class BehaviorIncidentTypeSerializer(NamespacedHyperlinkedModelSerializer):
-    applicable_student = serializers.PrimaryKeyRelatedField()
+    applicable_student = serializers.PrimaryKeyRelatedField(required=False)
 
     class Meta:
         model = BehaviorIncidentType
