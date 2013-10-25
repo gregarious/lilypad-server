@@ -104,6 +104,7 @@ class PeriodicRecordDetail(generics.RetrieveAPIView):
     queryset = PeriodicRecord.objects.all()
     serializer_class = PeriodicRecordSerializer
 
+# TODO: could post a resource with a different student here. clarify the functionality for that.
 class StudentPeriodicRecordList(PeriodicRecordList):
     '''
     Access all PeriodicRecord for a given student.
@@ -143,6 +144,7 @@ class PointLossDetail(generics.RetrieveDestroyAPIView):
     queryset = PointLoss.objects.all()
     serializer_class = PointLossSerializer
 
+# TODO: could post a resource with a different student here. clarify the functionality for that.
 class StudentPointLossList(PointLossList):
     '''
     Access all PointLoss resources for a given student.
@@ -164,6 +166,7 @@ class BehaviorIncidentTypeDetail(generics.RetrieveAPIView):
     queryset = BehaviorIncidentType.objects.all()
     serializer_class = BehaviorIncidentTypeSerializer
 
+# TODO: could post a resource with a different student here. clarify the functionality for that.
 class StudentBehaviorIncidentTypeList(BehaviorIncidentTypeList):
     '''
     Access all BehaviorIncidentType resources for a given student. This
@@ -245,6 +248,7 @@ class AttendanceSpanDetail(generics.RetrieveUpdateAPIView):
     queryset = AttendanceSpan.objects.all()
     serializer_class = AttendanceSpanSerializer
 
+# TODO: could post a resource with a different student here. clarify the functionality for that.
 class StudentAttendanceSpanList(AttendanceSpanList):
     '''
     Access all AttendanceSpan resources for a given student.
