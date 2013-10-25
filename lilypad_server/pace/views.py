@@ -88,7 +88,7 @@ class ClassroomStudentList(StudentList):
 
 ### PeriodicRecord resource views ###
 
-class PeriodicRecordList(generics.ListAPIView):
+class PeriodicRecordList(generics.ListCreateAPIView):
     serializer_class = PeriodicRecordSerializer
     def get_queryset(self):
         '''
