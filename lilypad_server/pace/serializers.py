@@ -111,7 +111,7 @@ class PointLossSerializer(NamespacedHyperlinkedModelSerializer):
 
 class PeriodicRecordSerializer(NamespacedHyperlinkedModelSerializer):
     student = serializers.PrimaryKeyRelatedField()
-    point_losses = PointLossSerializer(many=True, blank=True)
+    point_losses = PointLossSerializer(many=True, required=False)
 
     class Meta:
         model = PeriodicRecord
