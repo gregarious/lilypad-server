@@ -229,10 +229,8 @@ class StudentPostList(generics.ListAPIView):
 
 ### Attendance span views ###
 
-class AttendanceSpanList(generics.ListAPIView):
+class AttendanceSpanList(generics.ListCreateAPIView):
     serializer_class = AttendanceSpanSerializer
-
-    # TODO: enable PUT functionality
 
     def get_queryset(self):
         queryset = AttendanceSpan.objects.all()
@@ -243,7 +241,7 @@ class AttendanceSpanList(generics.ListAPIView):
 
         return queryset
 
-class AttendanceSpanDetail(generics.RetrieveAPIView):
+class AttendanceSpanDetail(generics.RetrieveUpdateAPIView):
     queryset = AttendanceSpan.objects.all()
     serializer_class = AttendanceSpanSerializer
 
