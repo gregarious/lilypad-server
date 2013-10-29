@@ -182,7 +182,7 @@ class StudentBehaviorIncidentTypeList(BehaviorIncidentTypeList):
 
 ### BehaviorIncident resource views ###
 
-class BehaviorIncidentList(generics.ListAPIView):
+class BehaviorIncidentList(generics.ListCreateAPIView):
     serializer_class = BehaviorIncidentSerializer
     def get_queryset(self):
         queryset = BehaviorIncident.objects.all()

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from common.serializers import NamespacedHyperlinkedModelSerializer
+from common.serializers import NamespacedHyperlinkedModelSerializer, NamespacedHyperlinkedModelSerializerWithPKWrite
 
 from pace.models import Classroom, Student,             \
                         PeriodicRecord, PointLoss,      \
@@ -128,9 +128,17 @@ class BehaviorIncidentTypeSerializer(NamespacedHyperlinkedModelSerializer):
         fields = ('id', 'url', 'label', 'code', 'supports_duration',
             'applicable_student')
 
+class NestedBehaviorIncidentTypeSerializer(NamespacedHyperlinkedModelSerializerWithPKWrite):
+    applicable_student = serializers.PrimaryKeyRelatedField(required=False)
+
+    class Meta:
+        model = BehaviorIncidentType
+        fields = ('id', 'url', 'label', 'code', 'supports_duration',
+            'applicable_student')
+
 class BehaviorIncidentSerializer(NamespacedHyperlinkedModelSerializer):
     student = serializers.PrimaryKeyRelatedField()
-    type = BehaviorIncidentTypeSerializer()
+    type = NestedBehaviorIncidentTypeSerializer()
 
     class Meta:
         model = BehaviorIncident
