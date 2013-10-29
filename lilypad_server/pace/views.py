@@ -88,7 +88,7 @@ class ClassroomStudentList(StudentList):
 
 ### PeriodicRecord resource views ###
 
-class PeriodicRecordList(generics.ListCreateAPIView):
+class PeriodicRecordList(generics.ListAPIView):
     serializer_class = PeriodicRecordSerializer
     def get_queryset(self):
         '''
@@ -118,7 +118,7 @@ class StudentPeriodicRecordList(PeriodicRecordList):
 
 ### PointLoss resource views ###
 
-class PointLossList(generics.ListCreateAPIView):
+class PointLossList(generics.ListAPIView):
     '''
     Note that a side effect of a POST call here is the decrementing 
     of the related PeriodicRecord point for the corresponding type.
@@ -136,7 +136,7 @@ class PointLossList(generics.ListCreateAPIView):
                 queryset = queryset.filter(**{key: parser.parse(iso_string)})
         return queryset
 
-class PointLossDetail(generics.RetrieveDestroyAPIView):
+class PointLossDetail(generics.RetrieveAPIView):
     '''
     Note that a side effect of a DELETE call here is the incrementing 
     of the related PeriodicRecord point for the corresponding type.
@@ -158,7 +158,7 @@ class StudentPointLossList(PointLossList):
 
 ### BehaviorIncidentType resource views ###
 
-class BehaviorIncidentTypeList(generics.ListCreateAPIView):
+class BehaviorIncidentTypeList(generics.ListAPIView):
     queryset = BehaviorIncidentType.objects.all()
     serializer_class = BehaviorIncidentTypeSerializer
 
@@ -182,7 +182,7 @@ class StudentBehaviorIncidentTypeList(BehaviorIncidentTypeList):
 
 ### BehaviorIncident resource views ###
 
-class BehaviorIncidentList(generics.ListCreateAPIView):
+class BehaviorIncidentList(generics.ListAPIView):
     serializer_class = BehaviorIncidentSerializer
     def get_queryset(self):
         queryset = BehaviorIncident.objects.all()
@@ -192,7 +192,7 @@ class BehaviorIncidentList(generics.ListCreateAPIView):
                 queryset = queryset.filter(**{key: parser.parse(iso_string)})
         return queryset
 
-class BehaviorIncidentDetail(generics.RetrieveUpdateDestroyAPIView):
+class BehaviorIncidentDetail(generics.RetrieveAPIView):
     queryset = BehaviorIncident.objects.all()
     serializer_class = BehaviorIncidentSerializer
 
@@ -232,7 +232,7 @@ class StudentPostList(generics.ListAPIView):
 
 ### Attendance span views ###
 
-class AttendanceSpanList(generics.ListCreateAPIView):
+class AttendanceSpanList(generics.ListAPIView):
     serializer_class = AttendanceSpanSerializer
 
     def get_queryset(self):
@@ -244,7 +244,7 @@ class AttendanceSpanList(generics.ListCreateAPIView):
 
         return queryset
 
-class AttendanceSpanDetail(generics.RetrieveUpdateAPIView):
+class AttendanceSpanDetail(generics.RetrieveAPIView):
     queryset = AttendanceSpan.objects.all()
     serializer_class = AttendanceSpanSerializer
 
