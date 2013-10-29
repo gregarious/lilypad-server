@@ -1,7 +1,6 @@
 from rest_framework import serializers
-from common.serializers import NamespacedHyperlinkedModelSerializer, stub_serializer_factory
+from common.serializers import NamespacedHyperlinkedModelSerializer, NamespacedHyperlinkedModelSerializerWithPKWrite
 
-from django.contrib.auth.models import User
 from pace.models import Classroom, Student,             \
                         PeriodicRecord, PointLoss,      \
                         BehaviorIncidentType, BehaviorIncident, \
@@ -13,7 +12,7 @@ class ClassroomSerializer(NamespacedHyperlinkedModelSerializer):
         fields = ('id', 'url', 'name',)
 
 class AttendanceSpanSerializer(NamespacedHyperlinkedModelSerializer):
-    student = stub_serializer_factory(Student)
+    student = serializers.PrimaryKeyRelatedField()
 
     class Meta:
         model = AttendanceSpan
@@ -103,7 +102,7 @@ class StudentSerializer(NamespacedHyperlinkedModelSerializer):
         return None
 
 class PointLossSerializer(NamespacedHyperlinkedModelSerializer):
-    periodic_record = stub_serializer_factory(PeriodicRecord)
+    periodic_record = serializers.PrimaryKeyRelatedField()
 
     class Meta:
         model = PointLoss
@@ -111,8 +110,8 @@ class PointLossSerializer(NamespacedHyperlinkedModelSerializer):
             'point_type', 'comment')
 
 class PeriodicRecordSerializer(NamespacedHyperlinkedModelSerializer):
-    student = stub_serializer_factory(Student)
-    point_losses = PointLossSerializer(many=True)
+    student = serializers.PrimaryKeyRelatedField()
+    point_losses = PointLossSerializer(many=True, required=False)
 
     class Meta:
         model = PeriodicRecord
@@ -122,7 +121,15 @@ class PeriodicRecordSerializer(NamespacedHyperlinkedModelSerializer):
             'be_safe_points', 'point_losses')
 
 class BehaviorIncidentTypeSerializer(NamespacedHyperlinkedModelSerializer):
-    applicable_student = stub_serializer_factory(Student)
+    applicable_student = serializers.PrimaryKeyRelatedField(required=False)
+
+    class Meta:
+        model = BehaviorIncidentType
+        fields = ('id', 'url', 'label', 'code', 'supports_duration',
+            'applicable_student')
+
+class NestedBehaviorIncidentTypeSerializer(NamespacedHyperlinkedModelSerializerWithPKWrite):
+    applicable_student = serializers.PrimaryKeyRelatedField(required=False)
 
     class Meta:
         model = BehaviorIncidentType
@@ -130,8 +137,8 @@ class BehaviorIncidentTypeSerializer(NamespacedHyperlinkedModelSerializer):
             'applicable_student')
 
 class BehaviorIncidentSerializer(NamespacedHyperlinkedModelSerializer):
-    student = stub_serializer_factory(Student)
-    type = BehaviorIncidentTypeSerializer()
+    student = serializers.PrimaryKeyRelatedField()
+    type = NestedBehaviorIncidentTypeSerializer()
 
     class Meta:
         model = BehaviorIncident
@@ -149,7 +156,7 @@ class ReplyPostSerializer(serializers.ModelSerializer):
 class PostSerializer(NamespacedHyperlinkedModelSerializer):
     # TODO: make this a true User stub when user model worked out
     author = serializers.RelatedField()
-    student = stub_serializer_factory(Student)
+    student = serializers.PrimaryKeyRelatedField()
     replies = ReplyPostSerializer(many=True)
 
     class Meta:

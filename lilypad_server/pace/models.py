@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.signals import post_save, post_delete
+from django.dispatch import receiver
 
 class StaffProfile(models.Model):
     user = models.OneToOneField(User)
@@ -44,40 +46,36 @@ class PeriodicRecord(models.Model):
             raise ValueError('Cannot decrement: Value already 0')
         setattr(self, attribute, current-1)
 
-    def declare_point_loss(self, point_type):
+    def _increment(self, attribute):
+        current = getattr(self, attribute)
+        setattr(self, attribute, current+1)
+
+
+    def register_point_loss(self, point_loss):
         '''
-        Decrement a point value and create a record of it with a PointLoss
-        object. `point_loss` should be a constant from the POINT_CATEGORIES_*
+        Decrement the point value corresponding to the given point loss. 
+        `point_loss.point_type` should be a constant from the POINT_CATEGORIES_*
         choices.
-
-        Returns the new PointLoss object. If value for point_type is already
-        0, None will be returned instead. Will raise ValueError if unknown
-        type is provided.
-
-        This factory method should be the *only* place PointLoss models are
-        created.
         '''
-        unknown_type = False
-        try:
-            if point_type == POINT_CATEGORIES_KW:
-                self._decrement('kind_words_points')
-            elif point_type == POINT_CATEGORIES_CW:
-                self._decrement('complete_work_points')
-            elif point_type == POINT_CATEGORIES_FD:
-                self._decrement('follow_directions_points')
-            elif point_type == POINT_CATEGORIES_BS:
-                self._decrement('be_safe_points')
-            else:
-                unknown_type = True
-        except ValueError:
-            return None
+        type_field_name = point_type_to_field_name_map.get(point_loss.point_type)
+        if type_field_name:
+            self._decrement(type_field_name)
+            self.save()
+        else:
+            raise ValueError('Unsupported point_type: %s' % (str(point_loss.point_type)))
 
-        if unknown_type:
-            raise ValueError('Unsupported point_type: %s' % (str(point_type)))
-
-        return PointLoss.objects.create(periodic_record=self,
-            point_type=point_type)
-
+    def deregister_point_loss(self, point_loss):
+        '''
+        Increment the point value corresponding to the given point loss. 
+        `point_loss.point_type` should be a constant from the POINT_CATEGORIES_*
+        choices.
+        '''
+        type_field_name = point_type_to_field_name_map.get(point_loss.point_type)
+        if type_field_name:
+            self._increment(type_field_name)
+            self.save()
+        else:
+            raise ValueError('Unsupported point_type: %s' % (str(point_loss.point_type)))        
 
 # constant values for point loss type
 POINT_CATEGORIES_KW = 'kw'
@@ -90,6 +88,14 @@ POINT_CATEGORIES = (
     (POINT_CATEGORIES_FD, 'Follow Directions'),
     (POINT_CATEGORIES_BS, 'Be Safe'),
 )
+
+point_type_to_field_name_map = {
+    POINT_CATEGORIES_KW: 'kind_words_points',
+    POINT_CATEGORIES_CW: 'complete_work_points',
+    POINT_CATEGORIES_FD: 'follow_directions_points',
+    POINT_CATEGORIES_BS: 'be_safe_points'
+}
+
 class PointLoss(models.Model):
     occurred_at = models.DateTimeField()
     periodic_record = models.ForeignKey(PeriodicRecord, related_name="point_losses")
@@ -98,6 +104,18 @@ class PointLoss(models.Model):
 
     def __unicode__(self):
         return "<'%s' loss for record #%s @%s>" % (self.point_type, self.periodic_record.id, self.occurred_at.strftime('%Y-%m-%dT%H:%I:%S'),)
+
+# signals to connect point loss creation/destruction to respective PdRecord
+@receiver(post_save, sender=PointLoss)
+def register_point_loss_with_periodic_record(sender, instance, created, raw, **kwargs):
+    if created and not raw and instance.periodic_record:
+        instance.periodic_record.register_point_loss(instance)
+
+@receiver(post_delete, sender=PointLoss)
+def deregister_point_loss_with_periodic_record(sender, instance, **kwargs):
+    if instance.periodic_record:
+        instance.periodic_record.deregister_point_loss(instance)
+
 
 class BehaviorIncidentType(models.Model):
     code = models.CharField(max_length=6, blank=True)

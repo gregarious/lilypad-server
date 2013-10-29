@@ -50,7 +50,7 @@ class StudentViewBase():
     def get_serializer(self, instance=None, data=None, files=None, many=False, partial=False):
         '''
         Custom serializer to dynamically set the time which the `active_attendance_span`
-        query will be based. See StudentSerializer
+        query will be based. See StudentSerializer.
         '''
         serializer_class = self.get_serializer_class()
         context = self.get_serializer_context()
@@ -88,7 +88,7 @@ class ClassroomStudentList(StudentList):
 
 ### PeriodicRecord resource views ###
 
-class PeriodicRecordList(generics.ListAPIView):
+class PeriodicRecordList(generics.ListCreateAPIView):
     serializer_class = PeriodicRecordSerializer
     def get_queryset(self):
         '''
@@ -104,6 +104,7 @@ class PeriodicRecordDetail(generics.RetrieveAPIView):
     queryset = PeriodicRecord.objects.all()
     serializer_class = PeriodicRecordSerializer
 
+# TODO: could post a resource with a different student here. clarify the functionality for that.
 class StudentPeriodicRecordList(PeriodicRecordList):
     '''
     Access all PeriodicRecord for a given student.
@@ -117,10 +118,12 @@ class StudentPeriodicRecordList(PeriodicRecordList):
 
 ### PointLoss resource views ###
 
-class PointLossList(generics.ListAPIView):
+class PointLossList(generics.ListCreateAPIView):
+    '''
+    Note that a side effect of a POST call here is the decrementing 
+    of the related PeriodicRecord point for the corresponding type.
+    '''
     serializer_class = PointLossSerializer
-
-    # TODO: enable POST/PUT functionality that calls PeriodicRecord.declare_point_loss
 
     def get_queryset(self):
         '''
@@ -133,10 +136,15 @@ class PointLossList(generics.ListAPIView):
                 queryset = queryset.filter(**{key: parser.parse(iso_string)})
         return queryset
 
-class PointLossDetail(generics.RetrieveAPIView):
+class PointLossDetail(generics.RetrieveDestroyAPIView):
+    '''
+    Note that a side effect of a DELETE call here is the incrementing 
+    of the related PeriodicRecord point for the corresponding type.
+    '''
     queryset = PointLoss.objects.all()
     serializer_class = PointLossSerializer
 
+# TODO: could post a resource with a different student here. clarify the functionality for that.
 class StudentPointLossList(PointLossList):
     '''
     Access all PointLoss resources for a given student.
@@ -150,7 +158,7 @@ class StudentPointLossList(PointLossList):
 
 ### BehaviorIncidentType resource views ###
 
-class BehaviorIncidentTypeList(generics.ListAPIView):
+class BehaviorIncidentTypeList(generics.ListCreateAPIView):
     queryset = BehaviorIncidentType.objects.all()
     serializer_class = BehaviorIncidentTypeSerializer
 
@@ -158,6 +166,7 @@ class BehaviorIncidentTypeDetail(generics.RetrieveAPIView):
     queryset = BehaviorIncidentType.objects.all()
     serializer_class = BehaviorIncidentTypeSerializer
 
+# TODO: could post a resource with a different student here. clarify the functionality for that.
 class StudentBehaviorIncidentTypeList(BehaviorIncidentTypeList):
     '''
     Access all BehaviorIncidentType resources for a given student. This
@@ -173,7 +182,7 @@ class StudentBehaviorIncidentTypeList(BehaviorIncidentTypeList):
 
 ### BehaviorIncident resource views ###
 
-class BehaviorIncidentList(generics.ListAPIView):
+class BehaviorIncidentList(generics.ListCreateAPIView):
     serializer_class = BehaviorIncidentSerializer
     def get_queryset(self):
         queryset = BehaviorIncident.objects.all()
@@ -183,7 +192,7 @@ class BehaviorIncidentList(generics.ListAPIView):
                 queryset = queryset.filter(**{key: parser.parse(iso_string)})
         return queryset
 
-class BehaviorIncidentDetail(generics.RetrieveAPIView):
+class BehaviorIncidentDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = BehaviorIncident.objects.all()
     serializer_class = BehaviorIncidentSerializer
 
@@ -223,10 +232,8 @@ class StudentPostList(generics.ListAPIView):
 
 ### Attendance span views ###
 
-class AttendanceSpanList(generics.ListAPIView):
+class AttendanceSpanList(generics.ListCreateAPIView):
     serializer_class = AttendanceSpanSerializer
-
-    # TODO: enable PUT functionality
 
     def get_queryset(self):
         queryset = AttendanceSpan.objects.all()
@@ -237,10 +244,11 @@ class AttendanceSpanList(generics.ListAPIView):
 
         return queryset
 
-class AttendanceSpanDetail(generics.RetrieveAPIView):
+class AttendanceSpanDetail(generics.RetrieveUpdateAPIView):
     queryset = AttendanceSpan.objects.all()
     serializer_class = AttendanceSpanSerializer
 
+# TODO: could post a resource with a different student here. clarify the functionality for that.
 class StudentAttendanceSpanList(AttendanceSpanList):
     '''
     Access all AttendanceSpan resources for a given student.
