@@ -192,7 +192,7 @@ class BehaviorIncidentList(generics.ListCreateAPIView):
                 queryset = queryset.filter(**{key: parser.parse(iso_string)})
         return queryset
 
-class BehaviorIncidentDetail(generics.RetrieveAPIView):
+class BehaviorIncidentDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = BehaviorIncident.objects.all()
     serializer_class = BehaviorIncidentSerializer
 
