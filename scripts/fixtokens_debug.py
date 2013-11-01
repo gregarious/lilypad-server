@@ -8,11 +8,13 @@ from rest_framework.authtoken.models import Token
 try:
 	feeny = User.objects.get(username='feeny')
 	feeny.auth_token = Token('cce9b356c38ed8f3d0a59f2ca9d4cb108e92631f')
+	feeny.save()
 except User.ObjectDoesNotExist:
 	pass
 
 try:
 	turner = User.objects.get(username='turner')
 	turner.auth_token = Token('f66dd627a2c9d22c540025cea178ab32e23045af')
+	turner.save()
 except User.ObjectDoesNotExist:
 	pass
