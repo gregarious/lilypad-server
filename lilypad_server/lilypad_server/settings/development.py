@@ -1,5 +1,6 @@
 import os
 
+from django.core.exceptions import ImproperlyConfigured
 from lilypad_server.settings.base import *
 
 DEBUG = True
