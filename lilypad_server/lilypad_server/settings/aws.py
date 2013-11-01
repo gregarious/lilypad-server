@@ -13,6 +13,14 @@ from lilypad_server.settings.base import *
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
+# The next two settings should match the key/value pair set in 
+# `lilypad-server.config` for the namespace 
+# `aws:elasticbeanstalk:container:python:staticfiles`
+
+# Should be the path matching the `option_name`
+STATIC_URL = '/static/'
+
+# Should be the directory matching the `value` setting
 STATIC_ROOT = os.path.join(
 				os.path.dirname(		# <ROOT>
 					os.path.dirname(		# lilypad_server/
@@ -20,6 +28,3 @@ STATIC_ROOT = os.path.join(
 							os.path.dirname(		# settings/
 								os.path.abspath(__file__))))), 
 				'static')
-
-# STATIC_URL setting doesn't appear to do anything with AWS. Let's at least be explicit about it.
-STATIC_URL = '/static/'
