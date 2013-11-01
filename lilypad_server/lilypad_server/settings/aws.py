@@ -21,4 +21,5 @@ STATIC_ROOT = os.path.join(
 								os.path.abspath(__file__))))), 
 				'static')
 
-STATIC_URL = '/lilypad-client/'
+# STATIC_URL setting doesn't appear to do anything with AWS. Let's at least be explicit about it.
+STATIC_URL = '/static/'
