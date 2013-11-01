@@ -1,6 +1,7 @@
 # Django settings for lilypad_server project.
 
 import os
+from django.core.exceptions import ImproperlyConfigured
 
 # Root directory for all Django site code (one level below repository root)
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(
