@@ -1,0 +1,760 @@
+/*
+    Green:          #48bea4
+
+    Lighter gray:   #f9f9f9
+    Light gray:     #f1f1f1
+    Medium gray:    #8C8C8C
+    Dark gray:      #333333
+
+    Light border:   #B3B3B3
+    Medium border:  #7F7F7F
+    Dark border:    #333333
+
+    Text:           #58585b
+*/
+
+/* App universal */
+
+body {
+    width: 1024px;
+    height: 748px;
+    overflow: hidden;
+    color: #58585b;
+    font-family: aller_lightregular;
+    font-size: 18px;
+    /*letter-spacing: 0.1em;*/
+}
+
+a:link { 
+    -webkit-tap-highlight-color: rgba(0,0,0,0); 
+}
+
+h1 {
+    font-size: 32px;
+    margin-bottom: 0.5em;
+}
+
+h2 {
+    float: left;
+    font-size: 24px;
+    line-height: 2;
+}
+
+h3 {
+    width: 100%;
+    font-size: 18px;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    text-align: center;
+    background-color: #f9f9f9;
+}
+
+strong {
+    font-family: allerbold;
+}
+
+button {
+    box-sizing: border-box;
+    height: 44px;
+    background-color: #F4F4F4;
+    border: 1px solid #DBDBDB;
+    padding: 0.5em;
+    padding-left: 1em;
+    padding-right: 1em;
+    font-size: 11pt;
+    color: #58585b;
+}
+
+button.main {
+    background-color: #48bea4;
+    color: #fff;
+}
+
+button[disabled] {
+    opacity: 0.5;
+}
+
+section {
+    border: 1px solid #7f7f7f;
+    padding: 1em;
+}
+
+input[type=text], input[type=password] {
+    box-sizing: border-box;
+    height: 44px;
+    font-size: 14px;
+    color: #58585b;
+    outline: 0px;
+}
+
+textarea {
+    color: #58585b;
+    outline: 0px;
+}
+
+select {
+    margin-bottom: 1em;
+}
+
+table {
+    width: 100%;
+    border: 1px solid #DBDBDB;
+}
+
+th {
+    font-family: aller_lightregular;
+    background-color: #F4F4F4 ;
+}
+
+.input {
+    background-color: #f1f1f1;
+    text-align: center;
+}
+
+tr {
+    border-bottom: 1px solid #DBDBDB;
+    position: relative;
+}
+
+td, th {
+    padding: 1.1em .8em 1.1em .8em;
+    font-size: 10pt;
+    line-height: 1.25em;
+    letter-spacing: 0px;
+    text-align: left;
+}
+
+th {
+    font-size: 12pt;
+    text-align: center;
+}
+
+tr th {
+    padding: .7em .5em .5em .5em;
+    color: #8C8E90;
+}
+
+.disabled {
+    position: relative;
+}
+
+.disabled::after {
+    display: block;
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: #fff;
+    opacity: 0.8;
+}
+
+.disabled-striped::after {
+    display: block;
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: #f9f9f9;
+    background-image: repeating-linear-gradient(315deg, transparent, transparent 35px, rgb(255,255,255) 35px, rgb(255,255,255) 70px);
+    opacity: 0.8;
+}
+
+.hidden {
+    display: none;
+}
+
+.active {
+    display: block;
+}
+
+.selected {
+    background-color: #8c8c8c;
+    color: #ffffff;
+}
+
+.clearfix:after {
+    visibility: hidden;
+    display: block;
+    content: "";
+    clear: both;
+    height: 0;
+}
+
+.bordered {
+    margin-bottom: 1em;
+    border: 1px solid #b3b3b3;
+    outline: 0px;
+}
+
+.newIncident { 
+    float: right;
+    outline: 0px;
+}
+
+.editIncident { 
+    float: left;
+    outline: 0px;
+}
+
+.editIncident.highlighted {
+    background-color: #8C8C8C;
+    color: #FFF;
+}
+
+#login {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;   
+    bottom: 0;
+    background: #47BDA5;
+    z-index: 1;
+}
+
+#login .wrapper {
+    width: 500px;
+    text-align: center;
+    margin-top: 130px;
+    margin-left: 130px;
+}
+
+#lilypadLogo {
+    width: 160px;
+    height: 160px;
+    margin-left: 272px;
+    background-image: url(../images/logo.png);
+    background-repeat: no-repeat;
+    background-size: 160px;
+}
+
+#login input {
+    width: 215px;
+    margin-left: 0.5em;
+    background: none;
+    color: #f9f9f9;
+    border: 1px solid #f9f9f9;
+    padding-left: 10px;
+    font-size: 18pt;
+}
+
+#login label {
+    color: #f9f9f9;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0.25em;
+    display: block;
+    font-size: 17pt;
+}
+
+#login label:last-child {
+    margin-bottom: 1em;
+}
+
+#login button {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 92px; /* shim for old iOS safari */
+    color: #48bea4;
+    width: 324px;
+    margin-top: 30px;
+}
+
+.bs {
+    background-color: #db6464;
+}
+
+.kw {
+    background-color: #f5906c;
+}
+
+.cw {
+    background-color: #648ec9;
+}
+
+.fd {
+    background-color: #8a6aad;
+}
+
+/* App layout */
+
+#sidebar {
+    box-sizing: border-box;
+    position: relative;
+    float: left;
+    width: 280px;
+    height: 748px;
+    border-right: 1px solid #DBDBDB;
+}
+
+#logo {
+    width: 100%;
+    height: 42px;
+    line-height: 2.7;
+    background-color: #3DBEA5;
+    color: #f9f9f9;
+    box-sizing: border-box;
+    text-align: center;
+    font-size: 12pt;
+    padding-left: 0px;
+}
+
+#menu {
+    box-sizing: border-box;
+    height: 748px;
+    background-color: #f9f9f9;
+    overflow: auto;
+    padding-bottom: 44px;
+}
+
+#menu li {
+    position: relative;
+    line-height: 3.45;
+    height: 56px;
+    border-bottom: 1px solid #DBDBDB;
+    padding-left: 18px;
+    font-size: 13pt;
+}
+
+/*#menu li:last-child {*/
+    /*border: none;*/
+/*}*/
+
+/*#menu:before {*/
+    /*content:'';*/
+    /*display:block;*/
+    /*background: -moz-linear-gradient(top,   0%, rgba(249,249,249,1) 100%); *//* FF3.6+ */
+    /*background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0)), color-stop(100%,rgba(249,249,249,1))); *//* Chrome,Safari4+ */
+    /*background: -webkit-linear-gradient(top,  rgba(0,0,0,0) 0%,rgba(249,249,249,1) 100%); *//* Chrome10+,Safari5.1+ */
+    /*background: -o-linear-gradient(top,  rgba(0,0,0,0) 0%,rgba(249,249,249,1) 100%); *//* Opera 11.10+ */
+    /*background: -ms-linear-gradient(top,  rgba(0,0,0,0) 0%,rgba(249,249,249,1) 100%); *//* IE10+ */
+    /*background: linear-gradient(to bottom,  rgba(0,0,0,0) 0%,rgba(249,249,249,1) 100%); *//* W3C */
+    /*filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', endColorstr='#a6000000',GradientType=0 ); *//* IE6-9 */
+    /*position:absolute;*/
+    /*bottom:0;*/
+    /*left:0;*/
+    /*width:100%;*/
+    /*height:22px;*/
+/*}*/
+
+#main {
+    box-sizing: border-box;
+    position: relative;
+    float: left;
+    width: 744px;
+    height: 100%;
+}
+
+.mainContent {
+    padding: 0px 65px;
+}
+
+.mainTabs {
+    box-sizing: border-box;
+    display: inline-block;
+    height: 44px;
+    float: right;
+    margin-right: -65px;
+    background-color: #48bea4;
+    color: #ffffff;
+    padding-right: 15px;
+}
+
+.mainTabs li {
+    display: inline-block;
+    width: 120px;
+    text-align: center;
+    height: 100%;
+    vertical-align: middle;
+    line-height: 2.5;
+    font-family: aller_lightregular;
+}
+
+.tab-content {
+    height: 669px;
+    padding-top: 35px;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+}
+
+.divider {
+    border-bottom: 1px solid #B3B3B3;
+    width: 100%;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.divider.clear {
+    border-bottom: 0px solid #B3B3B3;
+    height: 5px;
+}
+
+.buttonGroup button {
+    margin-bottom: 20px;
+}
+
+.buttonGroup button:last-child {
+    margin-right: 0;
+}
+
+form .buttonGroup {
+    float: right;
+}
+
+form .buttonGroup button {
+    margin-right: 0.25em;
+}
+
+.modal table.behaviors {
+    width: 230px;
+    background: #FCFDFF;
+}
+
+.modal table.behaviors.invalid {
+    border-color: red;
+}
+
+
+.modal .behaviorsTableWrapper {
+    max-height: 280px;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+}
+
+.modal button.newCustomBehavior {
+    margin-left: 0px;
+    border-top: 0px;
+    width: 230px;
+    background: #FCFDFF;
+    color: #CACBCF;
+    outline: 0px;
+    border-top: 1px solid #DBDBDB;
+}
+
+.modal button.newCustomBehavior.invalid {
+    border-color: red;
+}
+
+.modal button{
+    outline: 0px;
+}
+
+.modal .behaviorSelection {
+    float: left;
+    width: 45%;
+}
+
+.modal .behaviorDetails {
+    float: left;
+    width: 55%;
+}
+
+.modal .behaviorDetails input[type=time] {
+    margin-bottom: 15px;
+}
+
+.modal .behaviorDetails textarea {
+    width: 275px;
+    height: 212px;
+    font-size: 12pt;
+    padding: 13px;
+    border-color: #DBDBDB;
+}
+
+.modal .newBehaviorForm {
+    position: absolute;
+    background: #FCFDFF;
+    width: 230px;
+    height: 351px;
+}
+
+.modal .newBehaviorForm input {
+    border: 0px;
+    background: transparent;
+    outline: 0px;
+}
+
+.modal .newBehaviorForm tr.selected {
+    background: #898B8D;
+    color: #FFF;
+}
+
+.modal .newBehaviorForm .buttonGroup {
+    float: none;
+}
+
+.modal .newBehaviorForm .buttonGroup button {
+    margin: 0px;
+    float: left;
+    width: 50%;
+    border: 0px;
+}
+
+.modalWrapper {
+    box-sizing: border-box;
+    position: absolute;
+    top: 0px;
+    left: -280px;
+    right: 0px;
+    height: 100%;
+    padding: 1em;
+    background-color: rgba(0,0,0,.6);
+}
+
+.modal {
+    box-sizing: border-box;
+    position: absolute;
+    top: 161px;
+    left: 21%;
+    right: 21%;
+    height: 55.5%;
+    padding: 1em;
+    background-color: #fff;
+}
+
+.modal .header {
+    margin: -1em -1em 20px -1em;
+    background: #F1F2F2;
+}
+
+.modal .header h4 {
+    font-size: 12pt;
+    margin-left: 125px;
+    margin-top: 15px;
+    float: left;
+}
+
+.modal .header button:first-child {
+    float:left;
+    border: 0px;
+    border-right: 1px solid #DBDBDB;
+    background: #F1F2F2;
+    width: 105px;
+} 
+
+.modal .header button:last-child {
+    float: right;
+    border: 0px;
+    background: #49BDA4;
+    color: #FFF;
+    margin: 0px;
+    width: 105px;
+}
+
+#menu #signout {
+    background-image: url(../images/icon_signout.png);
+    background-repeat: no-repeat;
+    background-position: 85px 18px;
+    text-align: center;
+    position: absolute;
+    width: 268px;
+    padding-left: 11px;
+    border-top: 1px solid #DBDBDB;
+    border-bottom: 0px;
+    bottom: 0px;
+    letter-spacing: 0px;
+}
+
+#menu #attendanceToggle {
+    text-align: center;
+    line-height: 3.3;
+    padding-left: 0px;
+}
+
+#menu #attendanceToggle.highlighted {
+    background-color: #3DBEA5;
+    color: #FFF;
+}
+
+/* Student Main Styles */
+
+/*#behaviorIncidents {*/
+    /*margin-top: 2em;*/
+/*}*/
+
+#behaviorTypeInput li {
+    font-size: 14px;
+    width: 101px;
+}
+
+td.invalid #behaviorTypeInput li {
+    border: 1px solid red;
+}
+
+/*#behaviorTypeInput li {*/
+    /*width: 150px;*/
+    /*font-size: 14px;*/
+/*}*/
+
+/*#behaviorNameInput {*/
+    /*box-sizing: border-box;*/
+    /*float: left;*/
+    /*width: 300px;*/
+    /*font-size: 14px;*/
+/*}*/
+
+#periodBehaviorCounters .frequency-counter {
+    width: 23.1%;
+    margin-right: 2.5%;
+}
+
+#periodBehaviorCounters .frequency-counter:last-child {
+    margin-right: 0;
+}
+
+#periodicBehaviors select {
+    float: right;
+}
+
+#periodBehaviorCounters {
+    font-size: 0;
+}
+
+#behaviorIncidentsTable .time {
+    width: 13%;
+    background: #F4F4F4;
+    text-align: center;
+}
+
+#behaviorIncidentsTable .label {
+    width: 40%;
+}
+
+#behaviorIncidentsTable .duration {
+    width: 13%;
+}
+
+#behaviorIncidentsTable .comment {
+    width: 34%;
+}
+
+#behaviorIncidentsTable .delete {
+    width: 8%;
+    text-align: center;
+}
+
+#behaviorIncidentsTable .deleteCircle {
+    width: 15px;
+    height: 15px;
+    border-radius: 20px;
+    background-color: #8C8C8C;
+    margin: 0px 0px 0px 5px;
+    color: #FFF;
+    font-size: 15pt;
+    -webkit-transition: all .2s;
+}
+
+#behaviorIncidentsTable .deleteCircle.active {
+    -webkit-transform: rotate(90deg);
+    background-color: #DC6564;
+}
+
+#behaviorIncidentsTable .deleteBtn {
+    position: absolute;
+    right: 77px;
+    width: 72px;
+    height: 23px;
+    margin-top: -6px;
+    padding-top: 7px;
+    background-color: #DC6564;
+    color: #FFF;
+    text-align: center;
+}
+
+.noData {
+    text-align: center;
+    padding-top: 27px;
+    height: 48px;
+    color: #98989F;
+}
+
+#discussions .post {
+    border-top: 1px solid #b3b3b3;
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+
+#discussions .reply {
+    margin-left: 50px;
+}
+
+#discussions .author {
+    font-family: allerbold;
+}
+
+#discussions .date {
+    float: right;
+    color: #8c8c8c;
+}
+
+#discussions .post .header {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+form {
+    display: block;
+}
+
+.bordered form  {
+    padding: 1em;
+}
+
+.bordered form label {
+    float: left;
+    margin-right: 2em;
+}
+
+.bordered form label:last-child {
+    margin-right: 0;
+}
+
+form[name=behavior] input[type=text], input[type=textarea] {
+    width: 207px;
+}
+
+form[name=incident] input[type=text] {
+    width: 380px;
+}
+
+form[name=analyze] {
+    position: relative
+}
+
+form[name=analyze] select {
+    position: absolute;
+    bottom: 0;
+    margin-bottom: 0;
+}
+
+form[name=analyze] span {
+    float: right;
+}
+
+form[name=analyze] span span:last-child {
+    margin-right: 3em;
+}
+
+#nostudent{
+    box-sizing: border-box;
+    background-color: #ddd;
+
+    font-size: 20px;
+    text-align: center;
+
+    padding-top: -webkit-calc(50% - 20px);
+    height: 100%;
+    width: 100%;
+}
+
+.studentName {
+    text-transform: uppercase;
+}

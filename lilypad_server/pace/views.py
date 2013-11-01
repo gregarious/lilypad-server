@@ -18,7 +18,7 @@ from dateutil import parser
 
 def index(request):
     try:
-        return serve(request, 'lilypad-pace/index.html')
+        return serve(request, 'pace/index.html')
     except Http404:
         return HttpResponse('Server is configured incorrectly: '
             'no index.html file was found for the Pace app.', status=404)
